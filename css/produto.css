@@ -482,6 +482,177 @@
   aspect-ratio: 4/3;
 }
 
+/* ================================================
+   ML-STYLE SECTIONS (Mercado Livre inspired)
+   Card-based sections with clear visual dividers
+   ================================================ */
+
+/* Section wrapper */
+.ml-section {
+  padding: var(--sp-4) 0;
+}
+.ml-section:first-of-type {
+  padding-top: var(--sp-6);
+}
+
+/* Card container */
+.ml-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Card header — colored line top */
+.ml-card__header {
+  padding: var(--sp-5) var(--sp-6);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.ml-card__header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--red);
+  border-radius: 3px 3px 0 0;
+}
+.ml-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ---- ML Specs ---- */
+.ml-specs {
+  padding: var(--sp-4) var(--sp-6) var(--sp-6);
+}
+.ml-specs__group {
+  margin-bottom: 0;
+}
+.ml-specs__subtitle {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: var(--sp-4) 0 var(--sp-2);
+}
+.ml-specs__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.ml-specs__table td {
+  padding: var(--sp-3) var(--sp-4);
+  font-size: .9rem;
+  color: var(--text);
+  vertical-align: middle;
+}
+.ml-specs__table tr {
+  border-bottom: 1px solid var(--border);
+}
+.ml-specs__table tr:last-child {
+  border-bottom: none;
+}
+.ml-specs__table td:first-child {
+  font-weight: 500;
+  color: var(--muted);
+  width: 38%;
+  padding-left: 0;
+}
+.ml-specs__table td:last-child {
+  font-weight: 600;
+  color: var(--text);
+}
+.ml-specs__table tr:nth-child(even) td {
+  background: var(--bg);
+}
+
+/* Divider between spec groups */
+.ml-specs__divider {
+  height: 1px;
+  background: var(--border);
+  margin: var(--sp-4) 0 0;
+}
+
+/* ---- ML Description ---- */
+.ml-desc {
+  padding: var(--sp-4) var(--sp-6) var(--sp-6);
+}
+.ml-desc__lead {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--red);
+  margin: 0 0 var(--sp-3);
+}
+.ml-desc__heading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 var(--sp-3);
+}
+.ml-desc p {
+  font-size: .92rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0 0 var(--sp-3);
+}
+.ml-desc__divider {
+  height: 1px;
+  background: var(--border);
+  margin: var(--sp-5) 0;
+}
+.ml-desc__sub {
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin: 0 0 var(--sp-3);
+}
+.ml-desc__features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.ml-desc__features li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: .9rem;
+  color: var(--text);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--red);
+}
+.ml-desc__check {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--red-light);
+  border-radius: 50%;
+}
+
+/* Photos inside ML card */
+.ml-card .pdp-photos {
+  padding: var(--sp-4) var(--sp-6) var(--sp-6);
+}
+.ml-card .pdp-photos img {
+  border: none;
+  background: var(--bg);
+}
+
 /* ---- Reviews ---- */
 .reviews {
   display: grid;
@@ -746,5 +917,22 @@
   }
   .pdp-photos {
     grid-template-columns: 1fr 1fr;
+  }
+  /* ML sections mobile */
+  .ml-card__header {
+    padding: var(--sp-4);
+  }
+  .ml-specs,
+  .ml-desc,
+  .ml-card .pdp-photos {
+    padding: var(--sp-3);
+  }
+  .ml-specs__table td:first-child {
+    width: 42%;
+  }
+  .ml-desc__features li {
+    font-size: .84rem;
+    padding: var(--sp-2);
+    gap: var(--sp-2);
   }
 }

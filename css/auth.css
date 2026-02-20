@@ -15,7 +15,7 @@
 
 .auth__card {
   width: 100%;
-  max-width: 420px;
+  max-width: 520px;
   background: var(--card);
   border: 1px solid var(--stroke);
   border-radius: var(--radius);
@@ -183,6 +183,49 @@
   color: var(--text);
 }
 
+/* ── Cadastro expanded card ── */
+#registerForm ~ .auth__divider { margin-top: var(--sp-2); }
+
+.auth__section-title {
+  font-size: .92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--red);
+  margin: var(--sp-2) 0 0;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--red-light);
+  width: 100%;
+}
+
+.auth__form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+
+.auth__field select {
+  padding: 12px 14px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-size: .92rem;
+  transition: border-color .2s, box-shadow .2s;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+.auth__field select:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-light);
+}
+
 /* Loading state */
 .auth__form.is-loading button[type="submit"] {
   opacity: .6;
@@ -193,8 +236,12 @@
 @media (max-width: 480px) {
   .auth__card {
     padding: var(--sp-6) var(--sp-4);
+    max-width: 100%;
   }
   .auth__title {
     font-size: 1.2rem;
+  }
+  .auth__form-row {
+    grid-template-columns: 1fr;
   }
 }

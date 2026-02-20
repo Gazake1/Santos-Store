@@ -17,6 +17,7 @@
   --card: #ffffff;
   --stroke: rgba(0, 0, 0, .08);
   --stroke2: rgba(0, 0, 0, .12);
+  --border: rgba(0, 0, 0, .10);
 
   --text: #1a1a2e;
   --muted: rgba(0, 0, 0, .55);
@@ -61,6 +62,7 @@
   --card: #171720;
   --stroke: rgba(255, 255, 255, .08);
   --stroke2: rgba(255, 255, 255, .12);
+  --border: rgba(255, 255, 255, .10);
 
   --text: #f7f7fb;
   --muted: rgba(255, 255, 255, .72);
@@ -932,7 +934,8 @@ ul, ol { list-style: none; }
 }
 
 .field input,
-.field select {
+.field select,
+.field textarea {
   border-radius: 12px;
   border: 1px solid var(--stroke2);
   background: rgba(0, 0, 0, .03);
@@ -942,12 +945,18 @@ ul, ol { list-style: none; }
   font-size: 14px;
   transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
 }
+.field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
 [data-theme="dark"] .field input,
-[data-theme="dark"] .field select {
+[data-theme="dark"] .field select,
+[data-theme="dark"] .field textarea {
   background: rgba(255, 255, 255, .05);
 }
 .field input:focus,
-.field select:focus {
+.field select:focus,
+.field textarea:focus {
   border-color: rgba(197, 30, 48, .55);
   box-shadow: 0 0 0 3px rgba(197, 30, 48, .12);
   outline: none;

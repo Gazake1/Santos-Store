@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f7fb" />
+  <title>Minha Conta — Santos Gamer</title>
+  <script>(function(){var t=localStorage.getItem('sg_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})()</script>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/minha-conta.css" />
+  <link rel="icon" href="../assets/logo-sg.png" />
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header" id="top">
+    <div class="container header__inner">
+      <a class="brand" href="../index.html" aria-label="Santos Gamer — Ir para o início">
+        <img class="brand__logo" src="../assets/LOGO SG VERMELHA PNG.png" alt="Santos Gamer Logo">
+        <span class="brand__text">
+          <strong class="brand__name">Santos Gamer</strong>
+          <span class="brand__sub">Hardware • Periféricos • Serviços</span>
+        </span>
+      </a>
+
+      <form class="search" role="search" aria-label="Buscar produtos" action="../index.html">
+        <svg class="search__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="searchInput" type="search" placeholder="Buscar produtos..." autocomplete="off" />
+        <button class="btn btn--solid btn--sm" type="submit" aria-label="Buscar">
+          <span class="hide-mobile">Buscar</span>
+          <svg class="show-mobile" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </form>
+
+      <div class="header__actions">
+        <a class="btn btn--ghost hide-tablet" href="vitrine.html">Vitrine</a>
+        <a class="btn btn--ghost hide-tablet" href="../index.html#produtos">Produtos</a>
+
+        <button class="themeBtn" id="themeToggle" type="button" aria-label="Alternar tema claro/escuro">
+          <svg class="themeBtn__icon themeBtn__icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="themeBtn__icon themeBtn__icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+
+        <button class="loginBtn is-logged" id="loginBtn" type="button" aria-label="Minha conta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="loginBtn__text hide-mobile" id="loginBtnText">Conta</span>
+        </button>
+
+        <button class="cartBtn" id="openCartBtn" type="button" aria-label="Abrir carrinho">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span class="cartBtn__text hide-mobile">Carrinho</span>
+          <span class="cartBtn__count" id="cartCount" aria-live="polite">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main id="main-content">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Navegação">
+      <div class="container">
+        <ol class="breadcrumb__list">
+          <li><a href="../index.html">Início</a></li>
+          <li aria-current="page">Minha Conta</li>
+        </ol>
+      </div>
+    </nav>
+
+    <!-- Account Panel -->
+    <section class="account">
+      <div class="container account__layout">
+
+        <!-- Sidebar -->
+        <aside class="account__sidebar">
+          <div class="account__profile-card">
+            <div class="account__avatar-wrap" id="avatarWrap">
+              <img class="account__avatar" id="avatarImg" src="" alt="Foto de perfil" />
+              <div class="account__avatar-placeholder" id="avatarPlaceholder">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <button class="account__avatar-edit" id="avatarEditBtn" type="button" aria-label="Trocar foto de perfil">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </button>
+              <input type="file" id="avatarInput" accept="image/*" hidden />
+            </div>
+            <h2 class="account__username" id="accountName">—</h2>
+            <p class="account__email" id="accountEmail">—</p>
+            <span class="account__since" id="accountSince">Membro desde —</span>
+          </div>
+
+          <nav class="account__nav" aria-label="Menu da conta">
+            <button class="account__nav-item is-active" data-tab="dados" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Dados pessoais
+            </button>
+            <button class="account__nav-item" data-tab="seguranca" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Segurança
+            </button>
+            <button class="account__nav-item" data-tab="pedidos" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+              Meus pedidos
+            </button>
+            <button class="account__nav-item" data-tab="preferencias" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              Preferências
+            </button>
+            <hr class="account__nav-divider" />
+            <button class="account__nav-item account__nav-item--danger" id="logoutBtn" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sair da conta
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Content panels -->
+        <div class="account__content">
+
+          <!-- Tab: Dados Pessoais -->
+          <div class="account__panel is-active" id="panel-dados">
+            <div class="account__panel-head">
+              <h2>Dados pessoais</h2>
+              <p>Gerencie suas informações pessoais. Estas informações são privadas e não serão exibidas para outros usuários.</p>
+            </div>
+
+            <form class="account__form" id="profileForm" novalidate>
+              <div class="account__form-row">
+                <div class="account__field">
+                  <label for="profileName">Nome completo</label>
+                  <input id="profileName" type="text" placeholder="Seu nome completo" required minlength="3" />
+                </div>
+                <div class="account__field">
+                  <label for="profileNickname">Apelido (opcional)</label>
+                  <input id="profileNickname" type="text" placeholder="Como quer ser chamado" />
+                </div>
+              </div>
+
+              <div class="account__form-row">
+                <div class="account__field">
+                  <label for="profileCpf">CPF</label>
+                  <input id="profileCpf" type="text" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" />
+                </div>
+                <div class="account__field">
+                  <label for="profilePhone">Telefone</label>
+                  <input id="profilePhone" type="tel" placeholder="(00) 00000-0000" maxlength="15" inputmode="tel" />
+                </div>
+              </div>
+
+              <div class="account__form-row">
+                <div class="account__field">
+                  <label for="profileBirth">Data de nascimento</label>
+                  <input id="profileBirth" type="date" />
+                </div>
+                <div class="account__field">
+                  <label for="profileGender">Gênero</label>
+                  <select id="profileGender">
+                    <option value="">Prefiro não informar</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                    <option value="NB">Não-binário</option>
+                    <option value="O">Outro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="account__divider"></div>
+
+              <h3 class="account__section-title">Endereço</h3>
+
+              <div class="account__form-row">
+                <div class="account__field account__field--sm">
+                  <label for="profileCep">CEP</label>
+                  <input id="profileCep" type="text" placeholder="00000-000" maxlength="9" inputmode="numeric" />
+                </div>
+                <div class="account__field">
+                  <label for="profileStreet">Rua / Avenida</label>
+                  <input id="profileStreet" type="text" placeholder="Rua das Flores" />
+                </div>
+              </div>
+
+              <div class="account__form-row">
+                <div class="account__field account__field--xs">
+                  <label for="profileNumber">Número</label>
+                  <input id="profileNumber" type="text" placeholder="123" />
+                </div>
+                <div class="account__field">
+                  <label for="profileComplement">Complemento</label>
+                  <input id="profileComplement" type="text" placeholder="Apto 4B" />
+                </div>
+                <div class="account__field">
+                  <label for="profileNeighborhood">Bairro</label>
+                  <input id="profileNeighborhood" type="text" placeholder="Centro" />
+                </div>
+              </div>
+
+              <div class="account__form-row">
+                <div class="account__field">
+                  <label for="profileCity">Cidade</label>
+                  <input id="profileCity" type="text" placeholder="Ribeirão Preto" />
+                </div>
+                <div class="account__field account__field--sm">
+                  <label for="profileState">Estado</label>
+                  <select id="profileState">
+                    <option value="">UF</option>
+                    <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+                    <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+                    <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+                    <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                    <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+                    <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+                    <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+                    <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+                    <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="account__error" id="profileError" role="alert" hidden></div>
+              <div class="account__success" id="profileSuccess" role="status" hidden></div>
+
+              <div class="account__form-actions">
+                <button class="btn btn--solid" type="submit" id="profileSubmit">Salvar alterações</button>
+                <button class="btn btn--ghost" type="button" id="profileCancel">Cancelar</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tab: Segurança -->
+          <div class="account__panel" id="panel-seguranca">
+            <div class="account__panel-head">
+              <h2>Segurança</h2>
+              <p>Atualize seu e-mail e senha. Mantenha suas credenciais seguras.</p>
+            </div>
+
+            <!-- Change email -->
+            <div class="account__card">
+              <h3 class="account__card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                Alterar e-mail
+              </h3>
+              <form class="account__form" id="emailForm" novalidate>
+                <div class="account__field">
+                  <label for="currentEmail">E-mail atual</label>
+                  <input id="currentEmail" type="email" disabled />
+                </div>
+                <div class="account__field">
+                  <label for="newEmail">Novo e-mail</label>
+                  <input id="newEmail" type="email" placeholder="novoemail@exemplo.com" required />
+                </div>
+                <div class="account__field">
+                  <label for="emailPassword">Senha atual (confirmação)</label>
+                  <input id="emailPassword" type="password" placeholder="Sua senha atual" required />
+                </div>
+                <div class="account__error" id="emailError" role="alert" hidden></div>
+                <div class="account__success" id="emailSuccess" role="status" hidden></div>
+                <button class="btn btn--solid" type="submit" id="emailSubmit">Alterar e-mail</button>
+              </form>
+            </div>
+
+            <!-- Change password -->
+            <div class="account__card">
+              <h3 class="account__card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+                Alterar senha
+              </h3>
+              <form class="account__form" id="passwordForm" novalidate>
+                <div class="account__field">
+                  <label for="currentPassword">Senha atual</label>
+                  <input id="currentPassword" type="password" placeholder="Sua senha atual" required />
+                </div>
+                <div class="account__field">
+                  <label for="newPassword">Nova senha</label>
+                  <input id="newPassword" type="password" placeholder="Mínimo 6 caracteres" required minlength="6" />
+                </div>
+                <div class="account__field">
+                  <label for="confirmNewPassword">Confirmar nova senha</label>
+                  <input id="confirmNewPassword" type="password" placeholder="Repita a nova senha" required minlength="6" />
+                </div>
+                <div class="account__error" id="passwordError" role="alert" hidden></div>
+                <div class="account__success" id="passwordSuccess" role="status" hidden></div>
+                <button class="btn btn--solid" type="submit" id="passwordSubmit">Alterar senha</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Tab: Meus pedidos -->
+          <div class="account__panel" id="panel-pedidos">
+            <div class="account__panel-head">
+              <h2>Meus pedidos</h2>
+              <p>Acompanhe seus pedidos e compras anteriores.</p>
+            </div>
+
+            <div class="account__card">
+              <div class="account__orders-empty" id="ordersEmpty">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+                <h3>Nenhum pedido ainda</h3>
+                <p>Quando você finalizar uma compra, seus pedidos aparecerão aqui.</p>
+                <a class="btn btn--solid" href="vitrine.html">Explorar produtos</a>
+              </div>
+
+              <div class="account__orders-list" id="ordersList" hidden>
+                <!-- JS populates -->
+              </div>
+            </div>
+
+            <!-- Purchase history -->
+            <div class="account__card" id="purchaseHistoryCard" hidden>
+              <h3 class="account__card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+                Histórico de compras
+              </h3>
+              <div class="account__history" id="purchaseHistory">
+                <!-- JS populates -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab: Preferências -->
+          <div class="account__panel" id="panel-preferencias">
+            <div class="account__panel-head">
+              <h2>Preferências</h2>
+              <p>Personalize sua experiência na Santos Gamer.</p>
+            </div>
+
+            <div class="account__card">
+              <h3 class="account__card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                Tema da loja
+              </h3>
+              <div class="account__pref-row">
+                <div class="account__pref-info">
+                  <strong>Modo escuro</strong>
+                  <span>Alterne entre o tema claro e escuro. Sua preferência é salva automaticamente.</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="prefThemeToggle" />
+                  <span class="switch__slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="account__card">
+              <h3 class="account__card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                Notificações
+              </h3>
+              <div class="account__pref-row">
+                <div class="account__pref-info">
+                  <strong>Ofertas e promoções</strong>
+                  <span>Receba alertas de ofertas exclusivas e promoções.</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="prefOffers" checked />
+                  <span class="switch__slider"></span>
+                </label>
+              </div>
+              <div class="account__pref-row">
+                <div class="account__pref-info">
+                  <strong>Atualizações de pedido</strong>
+                  <span>Receba notificações sobre o status dos seus pedidos.</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="prefOrderUpdates" checked />
+                  <span class="switch__slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="account__card">
+              <h3 class="account__card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                Dados locais
+              </h3>
+              <p class="account__pref-desc">Limpe os dados salvos localmente no seu navegador (carrinho, tema, preferências).</p>
+              <div class="account__pref-actions">
+                <button class="btn btn--outline" type="button" id="clearCartData">Limpar carrinho salvo</button>
+                <button class="btn btn--outline account__btn--danger" type="button" id="clearAllData">Limpar todos os dados locais</button>
+              </div>
+            </div>
+
+            <div class="account__card account__card--danger">
+              <h3 class="account__card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                Excluir conta
+              </h3>
+              <p class="account__pref-desc">Esta ação é irreversível. Todos os seus dados serão apagados permanentemente.</p>
+              <button class="btn btn--solid account__btn--danger" type="button" id="deleteAccountBtn">Excluir minha conta</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand-block">
+          <a class="brand brand--footer" href="../index.html" aria-label="Ir para o início">
+            <span class="brand__mark" aria-hidden="true">SG</span>
+            <span class="brand__text">
+              <strong class="brand__name">Santos Gamer</strong>
+              <span class="brand__sub">Hardware • Periféricos • Serviços</span>
+            </span>
+          </a>
+          <p class="footer__tagline">Loja gamer especializada em periféricos, hardware, upgrades e serviços técnicos.</p>
+        </div>
+        <div class="footer__cols">
+          <div class="footer__col">
+            <strong class="footer__col-title">Navegação</strong>
+            <a href="../index.html#produtos">Produtos</a>
+            <a href="../index.html#servicos">Serviços</a>
+            <a href="../index.html#monte-seu-pc">Monte seu PC</a>
+          </div>
+          <div class="footer__col">
+            <strong class="footer__col-title">Atendimento</strong>
+            <a href="../index.html">Horários</a>
+            <a href="../index.html">Garantia</a>
+            <a href="../index.html">Suporte</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Santos Gamer. Todos os direitos reservados.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast container -->
+  <div class="toastContainer" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
+
+  <script src="../js/sg-cart.js" defer></script>
+  <script src="../js/minha-conta.js" defer></script>
+</body>
+</html>

@@ -76,16 +76,25 @@
         id: data.user.id,
         name: data.user.name,
         email: data.user.email,
-        token: data.token,
       })
     );
+    localStorage.setItem("sg_token", data.token);
+
+    // Save extended profile
+    localStorage.setItem("sg_profile", JSON.stringify({
+      nickname: data.user.nickname || "",
+      cpf: data.user.cpf || "",
+      phone: data.user.phone || "",
+      birth: data.user.birth || "",
+      gender: data.user.gender || "",
+    }));
   }
 
   /* ── Redirect if already logged in ── */
   const currentUser = localStorage.getItem("sg_user");
   if (currentUser) {
-    // If user is logged in, redirect to home or previous page
-    const redirectTo = sessionStorage.getItem("sg_redirect") || "../index.html";
+    // If user is logged in, redirect to account page or previous page
+    const redirectTo = sessionStorage.getItem("sg_redirect") || "minha-conta.html";
     sessionStorage.removeItem("sg_redirect");
     window.location.href = redirectTo;
     return;
@@ -130,6 +139,12 @@
 
         // Save session
         saveSession(data);
+
+        // Sync cart from server
+        if (window.SgCart && data.cart) {
+          SgCart.syncOnLogin(data.cart);
+        }
+
         showToast(`Bem-vindo, ${data.user.name}!`);
 
         // Redirect after short delay for toast visibility
@@ -154,6 +169,29 @@
   const registerSubmit = document.getElementById("registerSubmit");
 
   if (registerForm) {
+    // CPF mask
+    const cpfInput = document.getElementById("cpf");
+    if (cpfInput) {
+      cpfInput.addEventListener("input", () => {
+        let v = cpfInput.value.replace(/\D/g, "").slice(0, 11);
+        if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+        else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+        else if (v.length > 3) v = v.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+        cpfInput.value = v;
+      });
+    }
+
+    // Phone mask
+    const phoneInput = document.getElementById("phone");
+    if (phoneInput) {
+      phoneInput.addEventListener("input", () => {
+        let v = phoneInput.value.replace(/\D/g, "").slice(0, 11);
+        if (v.length > 6) v = v.replace(/(\d{2})(\d{5})(\d{1,4})/, "($1) $2-$3");
+        else if (v.length > 2) v = v.replace(/(\d{2})(\d{1,5})/, "($1) $2");
+        phoneInput.value = v;
+      });
+    }
+
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       hideError(registerError);
@@ -162,10 +200,15 @@
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
       const confirmPassword = document.getElementById("confirmPassword").value;
+      const nickname = (document.getElementById("nickname")?.value || "").trim();
+      const cpf = (document.getElementById("cpf")?.value || "").trim();
+      const phone = (document.getElementById("phone")?.value || "").trim();
+      const birth = (document.getElementById("birth")?.value || "").trim();
+      const gender = (document.getElementById("gender")?.value || "").trim();
 
       // Client-side validation
       if (!name || !email || !password || !confirmPassword) {
-        showError(registerError, "Preencha todos os campos");
+        showError(registerError, "Preencha nome, e-mail e senha");
         return;
       }
       if (name.length < 3) {
@@ -191,7 +234,7 @@
         const res = await fetch(`${API}/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password }),
+          body: JSON.stringify({ name, email, password, nickname, cpf, phone, birth, gender }),
         });
 
         const data = await res.json();

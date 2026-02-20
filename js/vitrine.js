@@ -84,7 +84,6 @@ const PRODUCTS = [
 
 /* ── State ── */
 const state = {
-  cart: loadCart(),
   category: "Todos",
   sort: "relevancia",
   maxPrice: null,
@@ -115,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCategoryChips();
   initFilters();
   renderProducts();
-  renderCartBadge();
+  if (window.SgCart) { SgCart.registerProducts(PRODUCTS); SgCart.renderBadge(); }
 });
 
 /* ── Login Button ── */
@@ -130,13 +129,7 @@ function initLoginBtn() {
       if (loginBtn) {
         loginBtn.classList.add("is-logged");
         loginBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> ${firstName}`;
-        loginBtn.addEventListener("click", () => {
-          if (confirm(`Sair da conta de ${parsed.name}?`)) {
-            localStorage.removeItem("sg_user");
-            showToast("Logout realizado");
-            setTimeout(() => location.reload(), 800);
-          }
-        });
+        loginBtn.href = "minha-conta.html";
       }
     } catch (e) { localStorage.removeItem("sg_user"); }
   } else {
@@ -250,16 +243,13 @@ function renderProducts() {
   // Bind add-to-cart buttons
   grid.querySelectorAll("[data-add]").forEach(btn => {
     btn.addEventListener("click", () => {
-      const user = JSON.parse(localStorage.getItem("sg_user") || "null");
-      if (!user) {
-        sessionStorage.setItem("sg_redirect", window.location.href);
-        showToast("Faça login para adicionar ao carrinho", "error");
-        setTimeout(() => { window.location.href = "login.html"; }, 1200);
-        return;
+      if (window.SgCart) {
+        if (!SgCart.requireLogin()) return;
+        const p = PRODUCTS.find(x => x.id === btn.dataset.add);
+        if (!p) return;
+        SgCart.add(btn.dataset.add, { name: p.name, price: p.price, category: p.category });
+        showToast(`${p.name} adicionado ao carrinho`);
       }
-      addToCart(btn.dataset.add);
-      const p = PRODUCTS.find(x => x.id === btn.dataset.add);
-      showToast(`${p ? p.name : "Produto"} adicionado ao carrinho`);
     });
   });
 }
@@ -306,27 +296,6 @@ function productCard(p) {
       </div>
     </article>
   `;
-}
-
-/* ── Cart ── */
-function addToCart(productId) {
-  state.cart[productId] = (state.cart[productId] || 0) + 1;
-  persistCart();
-  renderCartBadge();
-}
-
-function renderCartBadge() {
-  const el = $("#cartCount");
-  if (!el) return;
-  el.textContent = String(Object.values(state.cart).reduce((a, b) => a + b, 0));
-}
-
-function persistCart() {
-  try { localStorage.setItem("sg_cart_v1", JSON.stringify(state.cart)); } catch {}
-}
-
-function loadCart() {
-  try { const r = localStorage.getItem("sg_cart_v1"); return r ? JSON.parse(r) : {}; } catch { return {}; }
 }
 
 /* ── Toast ── */

@@ -25,7 +25,6 @@ const GALLERY_IMAGES = [
 
 /* ── State ── */
 const state = {
-  cart: loadCart(),
   qty: 1,
   galleryIndex: 0,
 };
@@ -41,23 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initGallery();
   initQuantity();
   initActions();
-  renderCartBadge();
+  if (window.SgCart) SgCart.renderBadge();
 });
 
 /* =================================
    Login button & auth check
    ================================= */
-function requireLogin() {
-  const user = localStorage.getItem("sg_user");
-  if (!user) {
-    sessionStorage.setItem("sg_redirect", window.location.href);
-    showToast("Faça login para continuar", "error");
-    setTimeout(() => { window.location.href = "login.html"; }, 1000);
-    return false;
-  }
-  return true;
-}
-
 function initLoginBtn() {
   const loginBtn = $("#loginBtn");
   const user = localStorage.getItem("sg_user");
@@ -70,11 +58,7 @@ function initLoginBtn() {
         loginBtn.classList.add("is-logged");
         loginBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> ${firstName}`;
         loginBtn.addEventListener("click", () => {
-          if (confirm(`Sair da conta de ${parsed.name}?`)) {
-            localStorage.removeItem("sg_user");
-            showToast("Logout realizado");
-            setTimeout(() => location.reload(), 800);
-          }
+          window.location.href = "minha-conta.html";
         });
       }
     } catch (e) {
@@ -263,50 +247,23 @@ function initActions() {
 
   if (addBtn) {
     addBtn.addEventListener("click", () => {
-      if (!requireLogin()) return;
-      for (let i = 0; i < state.qty; i++) {
-        addToCart(PRODUCT.id);
+      if (window.SgCart) {
+        if (!SgCart.requireLogin()) return;
+        for (let i = 0; i < state.qty; i++) {
+          SgCart.add(PRODUCT.id, { name: PRODUCT.name, price: PRODUCT.price, category: PRODUCT.category });
+        }
+        showToast(`${state.qty}× ${PRODUCT.name} adicionado ao carrinho`);
       }
-      showToast(`${state.qty}× ${PRODUCT.name} adicionado ao carrinho`);
     });
   }
 
   if (buyBtn) {
     buyBtn.addEventListener("click", () => {
-      if (!requireLogin()) return;
-      for (let i = 0; i < state.qty; i++) {
-        addToCart(PRODUCT.id);
+      if (window.SgCart) {
+        if (!SgCart.requireLogin()) return;
+        SgCart.openWhatsApp(PRODUCT.name, PRODUCT.price);
       }
-      showToast("Redirecionando para o checkout...", "success");
     });
-  }
-}
-
-function addToCart(productId) {
-  state.cart[productId] = (state.cart[productId] || 0) + 1;
-  persistCart();
-  renderCartBadge();
-}
-
-function renderCartBadge() {
-  const countEl = $("#cartCount");
-  if (!countEl) return;
-  const count = Object.values(state.cart).reduce((a, b) => a + b, 0);
-  countEl.textContent = String(count);
-}
-
-function persistCart() {
-  try {
-    localStorage.setItem("sg_cart_v1", JSON.stringify(state.cart));
-  } catch { /* quota exceeded */ }
-}
-
-function loadCart() {
-  try {
-    const raw = localStorage.getItem("sg_cart_v1");
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
   }
 }
 

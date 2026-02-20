@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f7fb" />
+  <meta name="description" content="Monte seu PC Gamer sob medida — escolha processador, RAM, armazenamento e mais. Santos Gamer." />
+  <title>Monte seu PC sob medida — Santos Gamer</title>
+  <script>(function(){var t=localStorage.getItem('sg_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})()</script>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/servicos.css" />
+  <link rel="icon" href="../assets/logo-sg.png" />
+</head>
+
+<body>
+
+  <a class="skipLink" href="#main-content">Pular para o conteúdo</a>
+
+  <!-- Header -->
+  <header class="header" id="top">
+    <div class="container header__inner">
+      <a class="brand" href="../index.html" aria-label="Santos Gamer — Ir para o início">
+        <img class="brand__logo" src="../assets/LOGO SG VERMELHA PNG.png" alt="Santos Gamer Logo">
+        <span class="brand__text">
+          <strong class="brand__name">Santos Gamer</strong>
+          <span class="brand__sub">Hardware • Periféricos • Serviços</span>
+        </span>
+      </a>
+
+      <form class="search" role="search" aria-label="Buscar produtos" action="../index.html">
+        <svg class="search__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="searchInput" type="search" placeholder="Buscar: RTX, SSD, teclado, mouse..." autocomplete="off" />
+        <button class="btn btn--solid btn--sm" type="submit" aria-label="Buscar">
+          <span class="hide-mobile">Buscar</span>
+          <svg class="show-mobile" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </form>
+
+      <div class="header__actions">
+        <a class="btn btn--ghost hide-tablet" href="vitrine.html">Vitrine</a>
+        <a class="btn btn--ghost hide-tablet" href="../index.html#servicos">Serviços</a>
+
+        <button class="themeBtn" id="themeToggle" type="button" aria-label="Alternar tema claro/escuro">
+          <svg class="themeBtn__icon themeBtn__icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="themeBtn__icon themeBtn__icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+
+        <button class="loginBtn" id="loginBtn" type="button" aria-label="Entrar / Minha conta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="hide-mobile">Entrar</span>
+        </button>
+
+        <button class="cartBtn" id="openCartBtn" type="button" aria-label="Abrir carrinho">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span class="cartBtn__text hide-mobile">Carrinho</span>
+          <span class="cartBtn__count" id="cartCount" aria-live="polite">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main id="main-content">
+
+    <!-- Hero -->
+    <section class="svc-hero">
+      <div class="container">
+        <span class="svc-hero__icon">🖥️</span>
+        <h1 class="svc-hero__title">Monte seu PC sob medida</h1>
+        <p class="svc-hero__desc">Preencha suas preferências de configuração e a gente monta a melhor máquina pro seu objetivo e orçamento.</p>
+      </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="svc-form-section">
+      <div class="container">
+
+        <!-- Steps indicator -->
+        <div class="svc-steps">
+          <div class="svc-step is-active" data-step="1">
+            <span class="svc-step__num">1</span>
+            <span>Objetivo</span>
+          </div>
+          <div class="svc-steps__line"></div>
+          <div class="svc-step" data-step="2">
+            <span class="svc-step__num">2</span>
+            <span>Configurações</span>
+          </div>
+          <div class="svc-steps__line"></div>
+          <div class="svc-step" data-step="3">
+            <span class="svc-step__num">3</span>
+            <span>Enviar</span>
+          </div>
+        </div>
+
+        <form class="svc-form" id="buildForm" novalidate>
+
+          <!-- Step 1: Objetivo e Orçamento -->
+          <div class="svc-form__title">🎯 Objetivo e orçamento</div>
+          <p class="svc-form__subtitle">Nos conte como você pretende usar o PC.</p>
+
+          <div class="svc-grid">
+            <label class="field">
+              <span class="field__label">Objetivo principal</span>
+              <select id="goalSelect" required>
+                <option value="" disabled selected>Escolha...</option>
+                <option value="Competitivo (FPS alto)">Competitivo (FPS alto)</option>
+                <option value="Jogar + Stream">Jogar + Stream</option>
+                <option value="Criação de conteúdo (3D/edição)">Criação de conteúdo (3D/edição)</option>
+                <option value="Custo-benefício (jogos leves)">Custo-benefício (jogos leves)</option>
+                <option value="Trabalho + Jogos casuais">Trabalho + Jogos casuais</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Orçamento aproximado (R$)</span>
+              <input id="budgetInput" type="number" inputmode="numeric" min="1500" step="100" placeholder="Ex.: 4500" required />
+            </label>
+          </div>
+
+          <hr class="svc-divider" />
+
+          <!-- Step 2: Configurações -->
+          <div class="svc-form__title">⚙️ Preferências de configuração</div>
+          <p class="svc-form__subtitle">Marque o que achar importante — não precisa preencher tudo.</p>
+
+          <div class="svc-grid">
+            <label class="field">
+              <span class="field__label">Plataforma do processador</span>
+              <select id="cpuPlatform">
+                <option value="" disabled selected>Escolha...</option>
+                <option value="Intel">Intel</option>
+                <option value="AMD">AMD</option>
+                <option value="Sem preferência">Sem preferência</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Nível do processador</span>
+              <select id="cpuTier">
+                <option value="" disabled selected>Escolha...</option>
+                <option value="Entrada (i3 / Ryzen 3)">Entrada (i3 / Ryzen 3)</option>
+                <option value="Intermediário (i5 / Ryzen 5)">Intermediário (i5 / Ryzen 5)</option>
+                <option value="Avançado (i7 / Ryzen 7)">Avançado (i7 / Ryzen 7)</option>
+                <option value="Extremo (i9 / Ryzen 9)">Extremo (i9 / Ryzen 9)</option>
+                <option value="Sem preferência">Sem preferência</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Memória RAM</span>
+              <select id="ramSelect">
+                <option value="" disabled selected>Escolha...</option>
+                <option value="8 GB">8 GB</option>
+                <option value="16 GB">16 GB</option>
+                <option value="32 GB">32 GB</option>
+                <option value="64 GB">64 GB</option>
+                <option value="Sem preferência">Sem preferência</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Armazenamento</span>
+              <select id="storageSelect">
+                <option value="" disabled selected>Escolha...</option>
+                <option value="SSD 240 GB">SSD 240 GB</option>
+                <option value="SSD 480 GB">SSD 480 GB</option>
+                <option value="SSD 1 TB">SSD 1 TB</option>
+                <option value="NVMe 500 GB">NVMe 500 GB</option>
+                <option value="NVMe 1 TB">NVMe 1 TB</option>
+                <option value="NVMe 2 TB">NVMe 2 TB</option>
+                <option value="Sem preferência">Sem preferência</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Placa de vídeo (GPU)</span>
+              <select id="gpuSelect">
+                <option value="" disabled selected>Escolha...</option>
+                <option value="Integrada (sem GPU dedicada)">Integrada (sem GPU dedicada)</option>
+                <option value="Entrada (GTX 1650 / RX 6500)">Entrada (GTX 1650 / RX 6500)</option>
+                <option value="Intermediária (RTX 4060 / RX 7600)">Intermediária (RTX 4060 / RX 7600)</option>
+                <option value="Avançada (RTX 4070 / RX 7800)">Avançada (RTX 4070 / RX 7800)</option>
+                <option value="Topo (RTX 4080/4090)">Topo (RTX 4080/4090)</option>
+                <option value="Sem preferência">Sem preferência</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Preferência geral</span>
+              <select id="prefSelect">
+                <option value="" disabled selected>Escolha...</option>
+                <option value="Mais silencioso">Mais silencioso</option>
+                <option value="Mais RGB / estética">Mais RGB / estética</option>
+                <option value="Equilibrado">Equilibrado</option>
+              </select>
+            </label>
+          </div>
+
+          <!-- Extras -->
+          <div class="svc-extras">
+            <div class="svc-extras__title">Extras (opcional)</div>
+            <div class="svc-extras__grid">
+              <label class="svc-check">
+                <input type="checkbox" name="extras" value="Water Cooler" />
+                Water Cooler (refrigeração líquida)
+              </label>
+              <label class="svc-check">
+                <input type="checkbox" name="extras" value="Cabos customizados" />
+                Cabos customizados (sleeved)
+              </label>
+              <label class="svc-check">
+                <input type="checkbox" name="extras" value="Wi-Fi integrado" />
+                Wi-Fi integrado na placa-mãe
+              </label>
+              <label class="svc-check">
+                <input type="checkbox" name="extras" value="Bluetooth integrado" />
+                Bluetooth integrado
+              </label>
+              <label class="svc-check">
+                <input type="checkbox" name="extras" value="Gabinete com vidro temperado" />
+                Gabinete com vidro temperado
+              </label>
+              <label class="svc-check">
+                <input type="checkbox" name="extras" value="Fonte modular 80 Plus" />
+                Fonte modular 80 Plus
+              </label>
+            </div>
+          </div>
+
+          <hr class="svc-divider" />
+
+          <!-- Step 3: Dados -->
+          <div class="svc-form__title">👤 Seus dados</div>
+          <p class="svc-form__subtitle">Precisamos do seu nome para o orçamento via WhatsApp.</p>
+
+          <div class="svc-grid">
+            <label class="field">
+              <span class="field__label">Seu nome</span>
+              <input id="nameInput" type="text" placeholder="Ex.: João" required />
+            </label>
+
+            <label class="field">
+              <span class="field__label">Observações (opcional)</span>
+              <input id="obsInput" type="text" placeholder="Ex.: Já tenho um gabinete NZXT" />
+            </label>
+          </div>
+
+          <!-- Summary preview -->
+          <div class="svc-summary" id="summaryBox">
+            <div class="svc-summary__title">📋 Resumo do seu pedido</div>
+            <ul class="svc-summary__list" id="summaryList"></ul>
+          </div>
+
+          <!-- Info -->
+          <div class="svc-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <span>Ao enviar, você será redirecionado para o <strong>WhatsApp</strong> com todas as informações preenchidas. Sem compromisso!</span>
+          </div>
+
+          <button class="btn btn--solid btn--full btn--lg" type="submit" id="submitBtn">
+            Enviar pedido via WhatsApp
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand-block">
+          <a class="brand brand--footer" href="../index.html" aria-label="Ir para o início">
+            <span class="brand__mark" aria-hidden="true">SG</span>
+            <span class="brand__text">
+              <strong class="brand__name">Santos Gamer</strong>
+              <span class="brand__sub">Hardware • Periféricos • Serviços</span>
+            </span>
+          </a>
+          <p class="footer__tagline">Loja gamer especializada em periféricos, hardware, upgrades e serviços técnicos.</p>
+        </div>
+        <div class="footer__cols">
+          <div class="footer__col">
+            <strong class="footer__col-title">Navegação</strong>
+            <a href="../index.html#produtos">Produtos</a>
+            <a href="../index.html#servicos">Serviços</a>
+            <a href="monte-seu-pc.html">Monte seu PC</a>
+          </div>
+          <div class="footer__col">
+            <strong class="footer__col-title">Serviços</strong>
+            <a href="limpeza.html">Limpeza</a>
+            <a href="upgrade.html">Upgrade + Otimização</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Santos Gamer. Todos os direitos reservados.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toastContainer" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
+
+  <button class="backToTop" id="backToTop" type="button" aria-label="Voltar ao topo">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
+  <script src="../js/sg-cart.js" defer></script>
+  <script src="../js/monte-seu-pc.js" defer></script>
+</body>
+</html>

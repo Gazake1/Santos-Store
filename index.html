@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#f7f7fb" />
   <meta name="description" content="Santos Gamer — loja gamer especializada em periféricos, hardware, upgrades e serviços técnicos." />
   <title>Santos Gamer — Periféricos, Hardware & Serviços</title>
+  <script>(function(){var t=localStorage.getItem('sg_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})()</script>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" href="assets/logo-sg.png" />
 </head>
@@ -85,7 +86,7 @@
         <a class="mobileMenu__link" href="#produtos">Vitrine</a>
         <a class="mobileMenu__link" href="#servicos">Serviços</a>
         <a class="mobileMenu__link" href="#monte-seu-pc">Monte seu PC</a>
-        <a class="mobileMenu__link" href="pages/login.html">Entrar / Cadastrar</a>
+        <a class="mobileMenu__link" href="pages/login.html" id="mobileLoginLink">Entrar / Cadastrar</a>
       </div>
       <div class="mobileMenu__foot">
         <span class="muted small">Ribeirão Preto e região • Brasil</span>
@@ -149,7 +150,7 @@
               <li>Testes e validação</li>
               <li>Ajustes iniciais</li>
             </ul>
-            <a class="btn btn--outline btn--full" href="#monte-seu-pc">Quero montar</a>
+            <a class="btn btn--outline btn--full" href="pages/monte-seu-pc.html">Quero montar</a>
           </article>
 
           <article class="card card--service">
@@ -161,7 +162,7 @@
               <li>Melhora temperaturas</li>
               <li>Mais estabilidade</li>
             </ul>
-            <a class="btn btn--outline btn--full" href="#monte-seu-pc">Quero orçamento</a>
+            <a class="btn btn--outline btn--full" href="pages/limpeza.html">Quero orçamento</a>
           </article>
 
           <article class="card card--service">
@@ -173,7 +174,7 @@
               <li>Configuração e ajustes</li>
               <li>Ganho real de performance</li>
             </ul>
-            <a class="btn btn--outline btn--full" href="#produtos">Ver peças</a>
+            <a class="btn btn--outline btn--full" href="pages/upgrade.html">Quero upgrade</a>
           </article>
         </div>
       </div>
@@ -315,39 +316,6 @@
     </div>
   </footer>
 
-  <!-- Cart Drawer -->
-  <aside class="drawer" id="cartDrawer" aria-label="Carrinho" aria-hidden="true">
-    <div class="drawer__backdrop" id="cartBackdrop" tabindex="-1"></div>
-
-    <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
-      <div class="drawer__head">
-        <h3 id="cartTitle">Seu carrinho</h3>
-        <button class="iconBtn" id="closeCartBtn" type="button" aria-label="Fechar carrinho">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="drawer__body" id="cartItems"></div>
-
-      <div class="drawer__foot">
-        <div class="totals">
-          <div class="totals__row">
-            <span>Total</span>
-            <strong id="cartTotal">R$ 0,00</strong>
-          </div>
-          <div class="totals__row small muted">
-            <span>Frete e descontos</span>
-            <span>calculados depois</span>
-          </div>
-        </div>
-
-        <button class="btn btn--solid btn--full" id="checkoutBtn" type="button">Finalizar (simulado)</button>
-        <button class="btn btn--ghost btn--full" id="clearCartBtn" type="button">Limpar carrinho</button>
-        <p class="tiny muted" style="text-align: center;">Checkout aqui é demo. Depois integra com pagamento/WhatsApp.</p>
-      </div>
-    </div>
-  </aside>
-
   <!-- Toast container -->
   <div class="toastContainer" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
 
@@ -356,6 +324,7 @@
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
   </button>
 
+  <script src="js/sg-cart.js" defer></script>
   <script src="js/app.js" defer></script>
 </body>
 </html>
