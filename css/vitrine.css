@@ -1,0 +1,40 @@
+/* ================================================
+   Vitrine Page — Santos Gamer
+   ================================================ */
+
+/* Hero */
+.vitrine-hero {
+  padding: var(--sp-8) 0 var(--sp-4);
+  text-align: center;
+}
+.vitrine-hero__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 var(--sp-2);
+}
+.vitrine-hero__desc {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Category chips */
+.vitrine-cats {
+  padding: var(--sp-4) 0;
+}
+.vitrine-cats .cats__inner {
+  display: flex;
+  gap: var(--sp-2);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--sp-2);
+}
+
+@media (max-width: 768px) {
+  .vitrine-hero__title { font-size: 1.5rem; }
+  .vitrine-hero__desc { font-size: .9rem; }
+}

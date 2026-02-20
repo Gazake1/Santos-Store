@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f7fb" />
+  <meta name="description" content="Santos Gamer — loja gamer especializada em periféricos, hardware, upgrades e serviços técnicos." />
+  <title>Santos Gamer — Periféricos, Hardware & Serviços</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="assets/logo-sg.png" />
+</head>
+
+<body>
+
+  <!-- Skip link (acessibilidade) -->
+  <a class="skipLink" href="#main-content">Pular para o conteúdo</a>
+
+  <!-- Header -->
+  <header class="header" id="top">
+    <div class="container header__inner">
+      <!-- Brand -->
+      <a class="brand" href="#top" aria-label="Santos Gamer — Ir para o início">
+        <img class="brand__logo" src="assets/LOGO SG VERMELHA PNG.png" alt="Santos Gamer Logo">
+        <span class="brand__text">
+          <strong class="brand__name">Santos Gamer</strong>
+          <span class="brand__sub">Hardware • Periféricos • Serviços</span>
+        </span>
+      </a>
+
+      <!-- Search -->
+      <form class="search" role="search" aria-label="Buscar produtos">
+        <svg class="search__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="searchInput" type="search" placeholder="Buscar: RTX, SSD, teclado, mouse..." autocomplete="off" />
+        <button class="btn btn--solid btn--sm" type="submit" aria-label="Buscar">
+          <span class="hide-mobile">Buscar</span>
+          <svg class="show-mobile" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </form>
+
+      <!-- Actions -->
+      <div class="header__actions">
+        <a class="btn btn--ghost hide-tablet" href="#produtos">Vitrine</a>
+        <a class="btn btn--ghost hide-tablet" href="#servicos">Serviços</a>
+        <a class="btn btn--ghost hide-tablet" href="#monte-seu-pc">Monte seu PC</a>
+
+        <!-- Theme toggle -->
+        <button class="themeBtn" id="themeToggle" type="button" aria-label="Alternar tema claro/escuro">
+          <svg class="themeBtn__icon themeBtn__icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="themeBtn__icon themeBtn__icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+
+        <a class="loginBtn" id="loginBtn" href="pages/login.html" aria-label="Fazer login">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="loginBtn__text hide-mobile">Entrar</span>
+        </a>
+
+        <button class="cartBtn" id="openCartBtn" type="button" aria-label="Abrir carrinho">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span class="cartBtn__text hide-mobile">Carrinho</span>
+          <span class="cartBtn__count" id="cartCount" aria-live="polite">0</span>
+        </button>
+
+        <!-- Mobile menu toggle -->
+        <button class="menuBtn" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span class="menuBtn__bar"></span>
+          <span class="menuBtn__bar"></span>
+          <span class="menuBtn__bar"></span>
+        </button>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobileMenu" id="mobileMenu" aria-hidden="true">
+    <div class="mobileMenu__backdrop" id="mobileMenuBackdrop"></div>
+    <nav class="mobileMenu__panel" role="navigation" aria-label="Menu principal">
+      <div class="mobileMenu__head">
+        <strong>Menu</strong>
+        <button class="iconBtn" id="mobileMenuClose" type="button" aria-label="Fechar menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="mobileMenu__body">
+        <a class="mobileMenu__link" href="#produtos">Vitrine</a>
+        <a class="mobileMenu__link" href="#servicos">Serviços</a>
+        <a class="mobileMenu__link" href="#monte-seu-pc">Monte seu PC</a>
+        <a class="mobileMenu__link" href="pages/login.html">Entrar / Cadastrar</a>
+      </div>
+      <div class="mobileMenu__foot">
+        <span class="muted small">Ribeirão Preto e região • Brasil</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Main content -->
+  <main id="main-content">
+
+    <!-- HERO: Full-width Carousel -->
+    <section class="homeHero" aria-label="Promoções">
+      <div class="carousel" id="promoCarousel" aria-roledescription="carousel" aria-label="Banners promocionais">
+        <div class="carousel__track" id="carouselTrack">
+
+          <!-- Slide 1 -->
+          <article class="slide" data-slide style="--bg1: rgba(197,30,48,.20); --bg2: rgba(255,255,255,.06);">
+                <div class="mediaPlaceholder"><img src="assets/img/sla.webp" alt=""></div>
+          </article>
+
+          <!-- Slide 2 -->
+          <article class="slide" data-slide style="--bg1: rgba(255,255,255,.08); --bg2: rgba(197,30,48,.14);">
+                <div class="mediaPlaceholder"><img src="assets/img/sla2.webp" alt=""></div>
+          </article>
+
+          <!-- Slide 3 -->
+          <article class="slide" data-slide style="--bg1: rgba(197,30,48,.16); --bg2: rgba(0,0,0,.10);">
+                <div class="mediaPlaceholder"><img src="assets/img/sla3.webp" alt=""></div>
+          </article>
+        </div>
+
+        <button class="carousel__btn carousel__btn--prev" id="prevSlideBtn" type="button" aria-label="Banner anterior">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button class="carousel__btn carousel__btn--next" id="nextSlideBtn" type="button" aria-label="Próximo banner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+
+        <div class="carousel__dots" id="carouselDots" role="tablist" aria-label="Navegação do carrossel"></div>
+      </div>
+
+    </section>
+
+    <!-- Serviços -->
+    <section class="section" id="servicos">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2 class="section__title">Serviços técnicos gamer</h2>
+            <p class="section__desc">Do básico ao avançado — padrão profissional e foco em desempenho.</p>
+          </div>
+        </div>
+
+        <div class="grid grid--3">
+          <article class="card card--service">
+            <div class="card__icon" aria-hidden="true">🖥️</div>
+            <h3>Montagem de PC Gamer</h3>
+            <p>Você traz as peças ou a gente compra tudo e monta conforme o objetivo.</p>
+            <ul class="list" role="list">
+              <li>Organização de cabos</li>
+              <li>Testes e validação</li>
+              <li>Ajustes iniciais</li>
+            </ul>
+            <a class="btn btn--outline btn--full" href="#monte-seu-pc">Quero montar</a>
+          </article>
+
+          <article class="card card--service">
+            <div class="card__icon" aria-hidden="true">🧹</div>
+            <h3>Limpeza (básica → avançada)</h3>
+            <p>Desmontagem completa, organização de cabos e troca de pasta térmica.</p>
+            <ul class="list" role="list">
+              <li>Remove poeira</li>
+              <li>Melhora temperaturas</li>
+              <li>Mais estabilidade</li>
+            </ul>
+            <a class="btn btn--outline btn--full" href="#monte-seu-pc">Quero orçamento</a>
+          </article>
+
+          <article class="card card--service">
+            <div class="card__icon" aria-hidden="true">🚀</div>
+            <h3>Upgrade + Otimização</h3>
+            <p>Melhorias no PC/notebook e ajustes focados em FPS e estabilidade.</p>
+            <ul class="list" role="list">
+              <li>Melhor custo-benefício</li>
+              <li>Configuração e ajustes</li>
+              <li>Ganho real de performance</li>
+            </ul>
+            <a class="btn btn--outline btn--full" href="#produtos">Ver peças</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Monte seu PC -->
+    <section class="section section--dark" id="monte-seu-pc">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2 class="section__title">Monte seu PC sob medida</h2>
+            <p class="section__desc">Você diz o objetivo e orçamento — e a gente monta a melhor opção.</p>
+          </div>
+        </div>
+
+        <form class="builder" id="builderForm" novalidate>
+          <div class="builder__grid">
+            <label class="field">
+              <span class="field__label">Objetivo</span>
+              <select id="goalSelect" required>
+                <option value="" disabled selected>Escolha...</option>
+                <option value="competitivo">Competitivo (FPS alto)</option>
+                <option value="stream">Jogar + Stream</option>
+                <option value="criacao">Criação (3D/edição)</option>
+                <option value="custo">Custo-benefício</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Orçamento (R$)</span>
+              <input id="budgetInput" type="number" inputmode="numeric" min="1500" step="100" placeholder="Ex.: 4500" required />
+            </label>
+
+            <label class="field">
+              <span class="field__label">Preferência</span>
+              <select id="prefSelect" required>
+                <option value="" disabled selected>Escolha...</option>
+                <option value="silencioso">Mais silencioso</option>
+                <option value="rgb">Mais RGB/estética</option>
+                <option value="equilibrado">Equilibrado</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Seu nome</span>
+              <input id="nameInput" type="text" placeholder="Ex.: João" required />
+            </label>
+          </div>
+
+          <button class="btn btn--solid btn--full btn--lg" type="submit">Gerar pedido de orçamento</button>
+          <p class="tiny muted" style="margin-top: 8px; text-align: center;">Depois você integra com WhatsApp, e-mail, CRM ou API.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Produtos -->
+    <section class="section" id="produtos">
+      <div class="container">
+        <div class="section__head">
+          <div>
+            <h2 class="section__title">Vitrine de produtos</h2>
+            <p class="section__desc">Periféricos, hardware e upgrades — filtros rápidos e carrinho.</p>
+          </div>
+        </div>
+
+        <div class="toolbar" role="region" aria-label="Filtros de vitrine">
+          <div class="toolbar__left">
+            <label class="field field--inline">
+              <span class="field__label">Ordenar</span>
+              <select id="sortSelect">
+                <option value="relevancia" selected>Relevância</option>
+                <option value="menor-preco">Menor preço</option>
+                <option value="maior-preco">Maior preço</option>
+                <option value="mais-vendidos">Mais vendidos</option>
+              </select>
+            </label>
+
+            <label class="field field--inline">
+              <span class="field__label">Preço até</span>
+              <input id="maxPriceInput" type="number" min="0" step="50" placeholder="Ex.: 2500" />
+            </label>
+
+            <button class="btn btn--ghost" id="clearFiltersBtn" type="button">Limpar filtros</button>
+          </div>
+
+          <div class="toolbar__right">
+            <span class="pill" id="resultsCount" aria-live="polite">0 itens</span>
+          </div>
+        </div>
+
+        <div class="products" id="productsGrid" aria-live="polite">
+          <!-- JS injeta cards -->
+        </div>
+
+        <div class="vitrine-cta">
+          <a class="btn btn--solid btn--lg" href="pages/vitrine.html">
+            Ver todos os produtos
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand-block">
+          <a class="brand brand--footer" href="#top" aria-label="Ir para o início">
+            <span class="brand__mark" aria-hidden="true">SG</span>
+            <span class="brand__text">
+              <strong class="brand__name">Santos Gamer</strong>
+              <span class="brand__sub">Hardware • Periféricos • Serviços</span>
+            </span>
+          </a>
+          <p class="footer__tagline">Loja gamer especializada em periféricos, hardware, upgrades e serviços técnicos.</p>
+        </div>
+
+        <div class="footer__cols">
+          <div class="footer__col">
+            <strong class="footer__col-title">Navegação</strong>
+            <a href="#produtos">Produtos</a>
+            <a href="#servicos">Serviços</a>
+            <a href="#monte-seu-pc">Monte seu PC</a>
+          </div>
+          <div class="footer__col">
+            <strong class="footer__col-title">Atendimento</strong>
+            <a href="#top">Horários</a>
+            <a href="#top">Garantia</a>
+            <a href="#top">Suporte</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span>&copy; 2026 Santos Gamer. Todos os direitos reservados.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <aside class="drawer" id="cartDrawer" aria-label="Carrinho" aria-hidden="true">
+    <div class="drawer__backdrop" id="cartBackdrop" tabindex="-1"></div>
+
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <div class="drawer__head">
+        <h3 id="cartTitle">Seu carrinho</h3>
+        <button class="iconBtn" id="closeCartBtn" type="button" aria-label="Fechar carrinho">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="drawer__body" id="cartItems"></div>
+
+      <div class="drawer__foot">
+        <div class="totals">
+          <div class="totals__row">
+            <span>Total</span>
+            <strong id="cartTotal">R$ 0,00</strong>
+          </div>
+          <div class="totals__row small muted">
+            <span>Frete e descontos</span>
+            <span>calculados depois</span>
+          </div>
+        </div>
+
+        <button class="btn btn--solid btn--full" id="checkoutBtn" type="button">Finalizar (simulado)</button>
+        <button class="btn btn--ghost btn--full" id="clearCartBtn" type="button">Limpar carrinho</button>
+        <p class="tiny muted" style="text-align: center;">Checkout aqui é demo. Depois integra com pagamento/WhatsApp.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Toast container -->
+  <div class="toastContainer" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Back to top -->
+  <button class="backToTop" id="backToTop" type="button" aria-label="Voltar ao topo">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f7fb" />
+  <title>Criar conta — Santos Gamer</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+  <link rel="icon" href="../assets/logo-sg.png" />
+</head>
+
+<body>
+
+  <main class="auth">
+    <div class="auth__card">
+      <a class="auth__brand" href="../index.html">
+        <img class="brand__logo" src="../assets/LOGO SG VERMELHA PNG.png" alt="Santos Gamer Logo">
+        <span class="brand__text">
+          <strong class="brand__name">Santos Gamer</strong>
+        </span>
+      </a>
+
+      <h1 class="auth__title">Criar sua conta</h1>
+      <p class="auth__subtitle">Cadastre-se para aproveitar as melhores ofertas gamer.</p>
+
+      <form class="auth__form" id="registerForm" novalidate>
+        <div class="auth__field">
+          <label for="name">Nome completo</label>
+          <input id="name" type="text" placeholder="Seu nome" required autocomplete="name" minlength="3" />
+        </div>
+
+        <div class="auth__field">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" placeholder="seu@email.com" required autocomplete="email" />
+        </div>
+
+        <div class="auth__field">
+          <label for="password">Senha</label>
+          <div class="auth__password-wrap">
+            <input id="password" type="password" placeholder="Mínimo 6 caracteres" required autocomplete="new-password" minlength="6" />
+            <button class="auth__toggle-pass" type="button" aria-label="Mostrar senha" id="togglePass">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth__field">
+          <label for="confirmPassword">Confirmar senha</label>
+          <input id="confirmPassword" type="password" placeholder="Repita sua senha" required autocomplete="new-password" minlength="6" />
+        </div>
+
+        <div class="auth__error" id="registerError" role="alert" hidden></div>
+
+        <button class="btn btn--solid btn--lg btn--full" type="submit" id="registerSubmit">
+          Criar conta
+        </button>
+      </form>
+
+      <div class="auth__divider"><span>ou</span></div>
+
+      <p class="auth__switch">
+        Já tem conta? <a href="login.html">Fazer login</a>
+      </p>
+
+      <a class="auth__back" href="../index.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Voltar para a loja
+      </a>
+    </div>
+  </main>
+
+  <div class="toastContainer" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
+
+  <script src="../js/auth.js" defer></script>
+</body>
+</html>

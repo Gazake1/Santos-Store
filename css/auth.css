@@ -1,0 +1,200 @@
+/* ================================================
+   Auth Pages (Login / Cadastro) — Santos Gamer
+   ================================================ */
+
+.auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(197, 30, 48, .08), transparent 50%),
+    var(--bg);
+}
+
+.auth__card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  padding: var(--sp-8) var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, .06);
+}
+
+.auth__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: var(--sp-2);
+}
+.auth__brand .brand__logo {
+  width: 44px;
+  height: 44px;
+}
+.auth__brand .brand__name {
+  font-size: 18px;
+  letter-spacing: .3px;
+}
+
+.auth__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  margin: 0;
+}
+
+.auth__subtitle {
+  font-size: .88rem;
+  color: var(--muted);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Form */
+.auth__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.auth__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.auth__field label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.auth__field input {
+  padding: 12px 14px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-size: .92rem;
+  transition: border-color .2s, box-shadow .2s;
+}
+.auth__field input:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-light);
+}
+.auth__field input::placeholder {
+  color: var(--muted);
+}
+
+/* Password toggle */
+.auth__password-wrap {
+  position: relative;
+}
+.auth__password-wrap input {
+  width: 100%;
+  padding-right: 44px;
+}
+.auth__toggle-pass {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  transition: color .2s;
+}
+.auth__toggle-pass:hover {
+  color: var(--text);
+}
+
+/* Error message */
+.auth__error {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(197, 30, 48, .08);
+  border: 1px solid rgba(197, 30, 48, .2);
+  color: var(--red);
+  font-size: .84rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Divider */
+.auth__divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--muted);
+  font-size: .82rem;
+}
+.auth__divider::before,
+.auth__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--stroke);
+}
+
+/* Switch link */
+.auth__switch {
+  font-size: .88rem;
+  color: var(--muted);
+  margin: 0;
+}
+.auth__switch a {
+  color: var(--red);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth__switch a:hover {
+  text-decoration: underline;
+}
+
+/* Back link */
+.auth__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .82rem;
+  color: var(--muted);
+  text-decoration: none;
+  margin-top: var(--sp-2);
+  transition: color .2s;
+}
+.auth__back:hover {
+  color: var(--text);
+}
+
+/* Loading state */
+.auth__form.is-loading button[type="submit"] {
+  opacity: .6;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth__card {
+    padding: var(--sp-6) var(--sp-4);
+  }
+  .auth__title {
+    font-size: 1.2rem;
+  }
+}
