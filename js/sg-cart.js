@@ -26,7 +26,12 @@ window.SgCart = (function () {
   }
 
   function getSession() {
-    try { return JSON.parse(localStorage.getItem("sg_user") || "null"); } catch { return null; }
+    try {
+      var user = JSON.parse(localStorage.getItem("sg_user") || "null");
+      var token = localStorage.getItem("sg_token");
+      if (user && token) { user.token = token; return user; }
+      return null;
+    } catch { return null; }
   }
 
   function isInPages() {

@@ -108,6 +108,7 @@
       id: data.user.id,
       name: data.user.name,
       email: data.user.email,
+      role: data.user.role || "user",
     }));
     localStorage.setItem("sg_token", data.token);
 
@@ -189,9 +190,14 @@
         // Save full session (user, token, profile, theme, avatar)
         saveSession(data);
 
-        // Sync cart from server
-        if (window.SgCart && data.cart) {
-          SgCart.syncOnLogin(data.cart);
+        // Save cart from server to localStorage (SgCart not loaded on auth page)
+        if (data.cart && data.cart.length > 0) {
+          const cartArr = data.cart.map(item => ({
+            id: item.product_id, qty: item.quantity,
+            name: item.name || item.product_id,
+            price: item.price || 0, category: item.category || "",
+          }));
+          localStorage.setItem("sg_cart", JSON.stringify(cartArr));
         }
 
         showToast(`Bem-vindo, ${data.user.name}!`);
@@ -590,8 +596,13 @@
         saveSession(data);
 
         // Sync cart if any local items
-        if (window.SgCart && data.cart) {
-          SgCart.syncOnLogin(data.cart);
+        if (data.cart && data.cart.length > 0) {
+          const cartArr = data.cart.map(item => ({
+            id: item.product_id, qty: item.quantity,
+            name: item.name || item.product_id,
+            price: item.price || 0, category: item.category || "",
+          }));
+          localStorage.setItem("sg_cart", JSON.stringify(cartArr));
         }
 
         showToast("Conta criada com sucesso!");

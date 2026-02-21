@@ -1,0 +1,14 @@
+# Nixpacks config for Santos Store
+# better-sqlite3 needs python + gcc to compile its native addon
+
+[phases.setup]
+nixPkgs = ["python3", "gcc", "gnumake", "nodejs-18_x"]
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["mkdir -p uploads"]
+
+[start]
+cmd = "node server/server.js"

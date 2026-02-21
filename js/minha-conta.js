@@ -38,16 +38,22 @@
 
   function toggleTheme() {
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    const newTheme = isDark ? "light" : "dark";
     if (isDark) {
       document.documentElement.removeAttribute("data-theme");
-      localStorage.setItem("sg_theme", "light");
     } else {
       document.documentElement.setAttribute("data-theme", "dark");
-      localStorage.setItem("sg_theme", "dark");
     }
+    localStorage.setItem("sg_theme", newTheme);
     // Sync the switch in preferences
     const prefToggle = $("#prefThemeToggle");
     if (prefToggle) prefToggle.checked = !isDark;
+    // Sync to server
+    fetch(`${API}/profile/theme`, {
+      method: "PUT",
+      headers: headers(),
+      body: JSON.stringify({ theme: newTheme }),
+    }).catch(() => {});
   }
 
   /* ── Toast ── */
@@ -504,13 +510,19 @@
   if (prefTheme) {
     prefTheme.checked = localStorage.getItem("sg_theme") === "dark";
     prefTheme.addEventListener("change", () => {
+      const newTheme = prefTheme.checked ? "dark" : "light";
       if (prefTheme.checked) {
         document.documentElement.setAttribute("data-theme", "dark");
-        localStorage.setItem("sg_theme", "dark");
       } else {
         document.documentElement.removeAttribute("data-theme");
-        localStorage.setItem("sg_theme", "light");
       }
+      localStorage.setItem("sg_theme", newTheme);
+      // Sync to server
+      fetch(`${API}/profile/theme`, {
+        method: "PUT",
+        headers: headers(),
+        body: JSON.stringify({ theme: newTheme }),
+      }).catch(() => {});
     });
   }
 

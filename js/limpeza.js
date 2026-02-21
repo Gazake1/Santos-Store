@@ -136,12 +136,17 @@
   if (themeToggle) {
     themeToggle.addEventListener("click", function () {
       var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      var newTheme = isDark ? "light" : "dark";
       if (isDark) {
         document.documentElement.removeAttribute("data-theme");
-        localStorage.setItem("sg_theme", "light");
       } else {
         document.documentElement.setAttribute("data-theme", "dark");
-        localStorage.setItem("sg_theme", "dark");
+      }
+      localStorage.setItem("sg_theme", newTheme);
+      var tk = localStorage.getItem("sg_token");
+      if (tk) {
+        var api = window.location.port ? window.location.protocol + "//" + window.location.hostname + ":3000/api" : "/api";
+        fetch(api + "/profile/theme", { method: "PUT", headers: { "Content-Type": "application/json", Authorization: "Bearer " + tk }, body: JSON.stringify({ theme: newTheme }) }).catch(function(){});
       }
     });
   }
@@ -150,8 +155,8 @@
   if (loginBtn) {
     var session;
     try { session = JSON.parse(localStorage.getItem("sg_user") || "null"); } catch (_) { session = null; }
-    if (session && session.token) {
-      loginBtn.querySelector("span").textContent = session.name || "Minha conta";
+    if (session) {
+      loginBtn.querySelector("span").textContent = session.name ? session.name.split(" ")[0] : "Minha conta";
       loginBtn.addEventListener("click", function () { window.location.href = "minha-conta.html"; });
     } else {
       loginBtn.addEventListener("click", function () { window.location.href = "login.html"; });

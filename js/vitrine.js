@@ -147,8 +147,15 @@ function initTheme() {
   const toggle = $("#themeToggle");
   if (toggle) toggle.addEventListener("click", () => {
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-    if (isDark) { document.documentElement.removeAttribute("data-theme"); localStorage.setItem("sg_theme", "light"); }
-    else { document.documentElement.setAttribute("data-theme", "dark"); localStorage.setItem("sg_theme", "dark"); }
+    const newTheme = isDark ? "light" : "dark";
+    if (isDark) { document.documentElement.removeAttribute("data-theme"); }
+    else { document.documentElement.setAttribute("data-theme", "dark"); }
+    localStorage.setItem("sg_theme", newTheme);
+    const tk = localStorage.getItem("sg_token");
+    if (tk) {
+      const api = window.location.port ? `${window.location.protocol}//${window.location.hostname}:3000/api` : "/api";
+      fetch(`${api}/profile/theme`, { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${tk}` }, body: JSON.stringify({ theme: newTheme }) }).catch(() => {});
+    }
   });
 }
 

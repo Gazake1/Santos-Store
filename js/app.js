@@ -249,12 +249,25 @@ function initTheme() {
 
 function toggleTheme() {
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  const newTheme = isDark ? "light" : "dark";
   if (isDark) {
     document.documentElement.removeAttribute("data-theme");
-    localStorage.setItem("sg_theme", "light");
   } else {
     document.documentElement.setAttribute("data-theme", "dark");
-    localStorage.setItem("sg_theme", "dark");
+  }
+  localStorage.setItem("sg_theme", newTheme);
+
+  /* Sync to server if logged in */
+  const token = localStorage.getItem("sg_token");
+  if (token) {
+    const apiBase = window.location.port
+      ? `${window.location.protocol}//${window.location.hostname}:3000/api`
+      : "/api";
+    fetch(`${apiBase}/profile/theme`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ theme: newTheme }),
+    }).catch(() => {});
   }
 }
 
