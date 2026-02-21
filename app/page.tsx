@@ -1,0 +1,240 @@
+"use client";
+
+import { useState, useEffect, useCallback, useRef } from "react";
+import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
+import ProductCard from "@/components/ProductCard";
+
+const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+/* ── Hardcoded products for the home page ── */
+const PRODUCTS = [
+  { id: "mousepad-fallen", name: "Mousepad Gamer Fallen Ace Speed++ Antiderrapante 45x45cm", category: "Acessórios", price: 197.9, sold: 3100, tag: "Mais vendido", image: "/assets/img/Mousepad.png", slug: "mousepad-fallen" },
+  { id: "gpu-rtx4060", name: "Placa de Vídeo RTX 4060 8GB GDDR6 128-bit", category: "Placa de Vídeo", price: 2499.9, sold: 870, tag: "Top", image: "", slug: "" },
+  { id: "cpu-ryzen5-7600", name: "Processador AMD Ryzen 5 7600 3.8GHz AM5", category: "Processador", price: 1149.9, sold: 640, tag: "Custo-benefício", image: "", slug: "" },
+  { id: "ssd-kingston-1tb", name: "SSD Kingston NV3 NVMe 1TB M.2 2280", category: "SSD", price: 319.9, sold: 2200, tag: "Oferta", image: "", slug: "" },
+  { id: "ram-corsair-16", name: "Memória RAM Corsair Vengeance 16GB DDR5 5200MHz", category: "Memória RAM", price: 399.9, sold: 980, tag: "DDR5", image: "", slug: "" },
+  { id: "mouse-logitech-g502", name: "Mouse Gamer Logitech G502 X 25600 DPI", category: "Mouse", price: 349.9, sold: 1750, tag: "FPS", image: "", slug: "" },
+  { id: "teclado-redragon", name: "Teclado Mecânico Redragon Kumara RGB Switch Red", category: "Teclado", price: 259.9, sold: 1430, tag: "Mecânico", image: "", slug: "" },
+  { id: "headset-hyperx", name: "Headset Gamer HyperX Cloud Stinger 2 7.1 Surround", category: "Headset", price: 249.9, sold: 1100, tag: "Som limpo", image: "", slug: "" },
+  { id: "monitor-aoc-144", name: 'Monitor AOC 24G2SE 23.8" 144Hz IPS Full HD', category: "Monitor", price: 1099.9, sold: 720, tag: "144Hz", image: "", slug: "" },
+  { id: "fonte-corsair-650", name: "Fonte Corsair CV650 650W 80 Plus Bronze", category: "Fonte", price: 449.9, sold: 590, tag: "Estável", image: "", slug: "" },
+  { id: "gabinete-aerocool", name: "Gabinete Aerocool Cylon Mid Tower RGB Lateral Vidro", category: "Gabinete", price: 299.9, sold: 480, tag: "Airflow", image: "", slug: "" },
+  { id: "mb-gigabyte-b650", name: "Placa-mãe Gigabyte B650M DS3H DDR5 AM5", category: "Placa-mãe", price: 849.9, sold: 360, tag: "AM5", image: "", slug: "" },
+];
+
+function normalize(str: string) {
+  return (str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+/* ── Carousel ── */
+function Carousel() {
+  const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStart = useRef(0);
+  const total = 3;
+
+  const goTo = useCallback((i: number) => setIndex(((i % total) + total) % total), []);
+  const next = useCallback(() => goTo(index + 1), [index, goTo]);
+  const prev = useCallback(() => goTo(index - 1), [index, goTo]);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => goTo(index + 1), 5500);
+    return () => clearInterval(timer);
+  }, [index, isPaused, goTo]);
+
+  useEffect(() => {
+    const handler = () => { if (document.hidden) setIsPaused(true); else setIsPaused(false); };
+    document.addEventListener("visibilitychange", handler);
+    return () => document.removeEventListener("visibilitychange", handler);
+  }, []);
+
+  return (
+    <section className="homeHero" aria-label="Promoções">
+      <div
+        className="carousel"
+        aria-roledescription="carousel"
+        aria-label="Banners promocionais"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={e => { touchStart.current = e.changedTouches[0].screenX; }}
+        onTouchEnd={e => {
+          const diff = touchStart.current - e.changedTouches[0].screenX;
+          if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+        }}
+        onKeyDown={e => { if (e.key === "ArrowLeft") prev(); if (e.key === "ArrowRight") next(); }}
+        tabIndex={0}
+      >
+        <div className="carousel__track" style={{ transform: `translateX(-${index * 100}%)` }}>
+          <article className="slide" style={{ "--bg1": "rgba(197,30,48,.20)", "--bg2": "rgba(255,255,255,.06)" } as React.CSSProperties}>
+            <div className="mediaPlaceholder"><img src="/assets/img/sla.webp" alt="Promoção 1" /></div>
+          </article>
+          <article className="slide" style={{ "--bg1": "rgba(255,255,255,.08)", "--bg2": "rgba(197,30,48,.14)" } as React.CSSProperties}>
+            <div className="mediaPlaceholder"><img src="/assets/img/sla2.webp" alt="Promoção 2" /></div>
+          </article>
+          <article className="slide" style={{ "--bg1": "rgba(197,30,48,.16)", "--bg2": "rgba(0,0,0,.10)" } as React.CSSProperties}>
+            <div className="mediaPlaceholder"><img src="/assets/img/sla3.webp" alt="Promoção 3" /></div>
+          </article>
+        </div>
+
+        <button className="carousel__btn carousel__btn--prev" type="button" aria-label="Banner anterior" onClick={prev}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button className="carousel__btn carousel__btn--next" type="button" aria-label="Próximo banner" onClick={next}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+
+        <div className="carousel__dots" role="tablist" aria-label="Navegação do carrossel">
+          {[0, 1, 2].map(i => (
+            <button key={i} className={`dot${i === index ? " is-active" : ""}`} type="button" role="tab" aria-label={`Banner ${i + 1}`} aria-selected={i === index} onClick={() => setIndex(i)} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function Home() {
+  const [sort, setSort] = useState("relevancia");
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [query, setQuery] = useState("");
+
+  /* Read query param on mount */
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q") || "";
+    if (q) { setQuery(q); setTimeout(() => document.getElementById("produtos")?.scrollIntoView({ behavior: "smooth" }), 300); }
+  }, []);
+
+  const filtered = (() => {
+    let list = [...PRODUCTS];
+    if (query) { const q = normalize(query); list = list.filter(p => normalize(p.name).includes(q) || normalize(p.category).includes(q)); }
+    if (maxPrice) list = list.filter(p => p.price <= maxPrice);
+    switch (sort) {
+      case "menor-preco": list.sort((a, b) => a.price - b.price); break;
+      case "maior-preco": list.sort((a, b) => b.price - a.price); break;
+      case "mais-vendidos": list.sort((a, b) => b.sold - a.sold); break;
+      default: list.sort((a, b) => (b.sold * 2 - b.price) - (a.sold * 2 - a.price));
+    }
+    return list;
+  })();
+
+  return (
+    <>
+      <Header />
+      <main id="main-content">
+        {/* Hero Carousel */}
+        <Carousel />
+
+        {/* Serviços */}
+        <section className="section" id="servicos">
+          <div className="container">
+            <div className="section__head">
+              <div>
+                <h2 className="section__title">Serviços técnicos gamer</h2>
+                <p className="section__desc">Do básico ao avançado — padrão profissional e foco em desempenho.</p>
+              </div>
+            </div>
+
+            <div className="grid grid--3">
+              <article className="card card--service">
+                <div className="card__icon" aria-hidden="true">🖥️</div>
+                <h3>Montagem de PC Gamer</h3>
+                <p>Você traz as peças ou a gente compra tudo e monta conforme o objetivo.</p>
+                <ul className="list" role="list">
+                  <li>Organização de cabos</li>
+                  <li>Testes e validação</li>
+                  <li>Ajustes iniciais</li>
+                </ul>
+                <Link className="btn btn--outline btn--full" href="/servicos/monte-seu-pc">Quero montar</Link>
+              </article>
+
+              <article className="card card--service">
+                <div className="card__icon" aria-hidden="true">🧹</div>
+                <h3>Limpeza (básica → avançada)</h3>
+                <p>Desmontagem completa, organização de cabos e troca de pasta térmica.</p>
+                <ul className="list" role="list">
+                  <li>Remove poeira</li>
+                  <li>Melhora temperaturas</li>
+                  <li>Mais estabilidade</li>
+                </ul>
+                <Link className="btn btn--outline btn--full" href="/servicos/limpeza">Quero orçamento</Link>
+              </article>
+
+              <article className="card card--service">
+                <div className="card__icon" aria-hidden="true">🚀</div>
+                <h3>Upgrade + Otimização</h3>
+                <p>Melhorias no PC/notebook e ajustes focados em FPS e estabilidade.</p>
+                <ul className="list" role="list">
+                  <li>Melhor custo-benefício</li>
+                  <li>Configuração e ajustes</li>
+                  <li>Ganho real de performance</li>
+                </ul>
+                <Link className="btn btn--outline btn--full" href="/servicos/upgrade">Quero upgrade</Link>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* Produtos */}
+        <section className="section" id="produtos">
+          <div className="container">
+            <div className="section__head">
+              <div>
+                <h2 className="section__title">Vitrine de produtos</h2>
+                <p className="section__desc">Periféricos, hardware e upgrades — filtros rápidos e carrinho.</p>
+              </div>
+            </div>
+
+            <div className="toolbar" role="region" aria-label="Filtros de vitrine">
+              <div className="toolbar__left">
+                <label className="field field--inline">
+                  <span className="field__label">Ordenar</span>
+                  <select value={sort} onChange={e => setSort(e.target.value)}>
+                    <option value="relevancia">Relevância</option>
+                    <option value="menor-preco">Menor preço</option>
+                    <option value="maior-preco">Maior preço</option>
+                    <option value="mais-vendidos">Mais vendidos</option>
+                  </select>
+                </label>
+
+                <label className="field field--inline">
+                  <span className="field__label">Preço até</span>
+                  <input type="number" min="0" step="50" placeholder="Ex.: 2500" value={maxPrice ?? ""} onChange={e => { const v = Number(e.target.value); setMaxPrice(Number.isFinite(v) && v > 0 ? v : null); }} />
+                </label>
+
+                <button className="btn btn--ghost" type="button" onClick={() => { setSort("relevancia"); setMaxPrice(null); setQuery(""); }}>Limpar filtros</button>
+              </div>
+
+              <div className="toolbar__right">
+                <span className="pill" aria-live="polite">{filtered.length} {filtered.length === 1 ? "item" : "itens"}</span>
+              </div>
+            </div>
+
+            <div className="products" aria-live="polite">
+              {filtered.length === 0 ? (
+                <div className="card" style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px 20px" }}>
+                  <h3 style={{ marginBottom: 8 }}>Nenhum produto encontrado</h3>
+                  <p className="muted">Tente remover filtros ou buscar por outro termo.</p>
+                </div>
+              ) : (
+                filtered.map(p => <ProductCard key={p.id} product={p} />)
+              )}
+            </div>
+
+            <div className="vitrine-cta">
+              <Link className="btn btn--solid btn--lg" href="/vitrine">
+                Ver todos os produtos
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+      <BackToTop />
+    </>
+  );
+}
