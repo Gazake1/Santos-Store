@@ -43,7 +43,7 @@ const Star = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
 );
 
-export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+export default function ProductPage({ params }: { params: { slug: string } }) {
   const { add, addMultiple, open: openCart } = useCart();
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -52,11 +52,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const [qty, setQty] = useState(1);
   const [galleryIdx, setGalleryIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
-  const [slug, setSlug] = useState("");
-
-  useEffect(() => {
-    params.then(p => setSlug(p.slug));
-  }, [params]);
+  const slug = params.slug;
 
   const requireLogin = () => {
     if (!user) { localStorage.setItem("sg_redirect", window.location.pathname); router.push("/login"); return false; }

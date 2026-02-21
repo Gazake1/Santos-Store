@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
@@ -14,12 +16,12 @@ interface ProductRow {
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   const result = requireAdmin(req);
   if (result instanceof Response) return result;
 
-  const { id } = await params;
+  const { id } = params;
   const db = getDb();
   const product = db.prepare("SELECT * FROM products WHERE id = ?").get(id) as ProductRow | undefined;
   if (!product) return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
@@ -63,12 +65,12 @@ export async function POST(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   const result = requireAdmin(req);
   if (result instanceof Response) return result;
 
-  const { id } = await params;
+  const { id } = params;
   const db = getDb();
   const product = db.prepare("SELECT * FROM products WHERE id = ?").get(id) as ProductRow | undefined;
   if (!product) return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });

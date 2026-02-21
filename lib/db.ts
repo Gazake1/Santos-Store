@@ -1,8 +1,13 @@
 import Database from "better-sqlite3";
 import path from "path";
+import fs from "fs";
 import bcrypt from "bcryptjs";
 
-const DB_PATH = path.join(process.cwd(), "server", "database.db");
+const DATA_DIR = path.join(process.cwd(), "data");
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+const DB_PATH = path.join(DATA_DIR, "database.db");
 
 let _db: Database.Database | null = null;
 

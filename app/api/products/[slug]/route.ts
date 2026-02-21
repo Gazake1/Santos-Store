@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 
@@ -9,9 +11,9 @@ interface ProductRow {
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: { slug: string } }
 ) {
-  const { slug } = await params;
+  const { slug } = params;
   const db = getDb();
   const product = db.prepare("SELECT * FROM products WHERE slug = ?").get(slug) as ProductRow | undefined;
   if (!product) return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
