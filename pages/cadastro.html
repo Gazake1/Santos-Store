@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f7f7fb" />
-  <title>Criar conta — Santos Gamer</title>
+  <title>Criar conta — Santos Store</title>
   <script>(function(){var t=localStorage.getItem('sg_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})()</script>
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/auth.css" />
@@ -14,19 +14,20 @@
 <body>
 
   <main class="auth">
-    <div class="auth__card">
+    <div class="auth__card auth__card--wide">
       <a class="auth__brand" href="../index.html">
-        <img class="brand__logo" src="../assets/LOGO SG VERMELHA PNG.png" alt="Santos Gamer Logo">
+        <img class="brand__logo" src="../assets/LOGO SG VERMELHA PNG.png" alt="Santos Store Logo">
         <span class="brand__text">
-          <strong class="brand__name">Santos Gamer</strong>
+          <strong class="brand__name">Santos Store</strong>
         </span>
       </a>
 
       <h1 class="auth__title">Criar sua conta</h1>
-      <p class="auth__subtitle">Cadastre-se para aproveitar as melhores ofertas gamer.</p>
+      <p class="auth__subtitle">Cadastre-se para aproveitar as melhores ofertas.</p>
 
       <form class="auth__form" id="registerForm" novalidate>
-        <!-- Dados de acesso -->
+
+        <!-- ═══ Dados de acesso ═══ -->
         <h2 class="auth__section-title">Dados de acesso</h2>
 
         <div class="auth__field">
@@ -51,7 +52,7 @@
           </div>
         </div>
 
-        <!-- Dados pessoais -->
+        <!-- ═══ Dados pessoais ═══ -->
         <h2 class="auth__section-title">Dados pessoais</h2>
 
         <div class="auth__form-row">
@@ -70,18 +71,28 @@
           <div class="auth__field">
             <label for="cpf">CPF</label>
             <input id="cpf" type="text" placeholder="000.000.000-00" autocomplete="off" maxlength="14" />
+            <span class="auth__feedback" id="cpfFeedback"></span>
           </div>
 
           <div class="auth__field">
-            <label for="phone">Telefone / WhatsApp</label>
-            <input id="phone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="15" />
+            <label for="birth">Data de nascimento</label>
+            <input id="birth" type="date" autocomplete="bday" />
+            <span class="auth__feedback" id="birthFeedback"></span>
           </div>
         </div>
 
         <div class="auth__form-row">
-          <div class="auth__field">
-            <label for="birth">Data de nascimento</label>
-            <input id="birth" type="date" autocomplete="bday" />
+          <div class="auth__field auth__field--phone">
+            <label for="phone">Telefone / WhatsApp</label>
+            <div class="auth__phone-row">
+              <input id="phone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="15" />
+              <button class="btn btn--outline btn--sm" type="button" id="sendCodeBtn" style="display:none">Enviar código</button>
+            </div>
+            <div class="auth__code-row" id="phoneCodeWrap" style="display:none">
+              <input id="phoneCode" type="text" placeholder="Código de 6 dígitos" maxlength="6" inputmode="numeric" />
+              <button class="btn btn--solid btn--sm" type="button" id="confirmCodeBtn">Confirmar</button>
+            </div>
+            <span class="auth__feedback" id="phoneFeedback"></span>
           </div>
 
           <div class="auth__field">
@@ -96,6 +107,63 @@
           </div>
         </div>
 
+        <!-- ═══ Endereço ═══ -->
+        <h2 class="auth__section-title">Endereço</h2>
+
+        <div class="auth__form-row">
+          <div class="auth__field auth__field--cep">
+            <label for="cep">CEP</label>
+            <input id="cep" type="text" placeholder="00000-000" maxlength="9" inputmode="numeric" />
+            <span class="auth__feedback" id="cepFeedback"></span>
+          </div>
+
+          <div class="auth__field auth__field--grow">
+            <label for="street">Rua</label>
+            <input id="street" type="text" placeholder="Nome da rua" autocomplete="street-address" />
+          </div>
+        </div>
+
+        <div class="auth__form-row auth__form-row--3">
+          <div class="auth__field auth__field--num">
+            <label for="street_number">Número</label>
+            <input id="street_number" type="text" placeholder="Nº" inputmode="numeric" />
+          </div>
+
+          <div class="auth__field auth__field--comp">
+            <label for="complement">Complemento</label>
+            <input id="complement" type="text" placeholder="Apto, bloco..." />
+          </div>
+
+          <div class="auth__field auth__field--grow">
+            <label for="neighborhood">Bairro</label>
+            <input id="neighborhood" type="text" placeholder="Bairro" />
+          </div>
+        </div>
+
+        <div class="auth__form-row">
+          <div class="auth__field auth__field--grow">
+            <label for="city">Cidade</label>
+            <input id="city" type="text" placeholder="Cidade" autocomplete="address-level2" />
+          </div>
+
+          <div class="auth__field auth__field--uf">
+            <label for="state">Estado</label>
+            <select id="state">
+              <option value="">UF</option>
+              <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+              <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+              <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+              <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+              <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+              <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+              <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+              <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+              <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ═══ Error & Submit ═══ -->
         <div class="auth__error" id="registerError" role="alert" hidden></div>
 
         <button class="btn btn--solid btn--lg btn--full" type="submit" id="registerSubmit">

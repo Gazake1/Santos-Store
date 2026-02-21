@@ -1,5 +1,5 @@
-/* =========================================
-   Santos Gamer — Produto Page JS
+﻿/* =========================================
+   Santos Store — Produto Page JS
    Gallery, Cart, Theme, Toast, Qty
    ========================================= */
 

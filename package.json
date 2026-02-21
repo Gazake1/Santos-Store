@@ -1,5 +1,5 @@
 {
-  "name": "santos-gamer-api",
+  "name": "santos-store-api",
   "version": "1.0.0",
   "description": "Backend API — Santos Gamer (auth + SQLite)",
   "main": "server.js",

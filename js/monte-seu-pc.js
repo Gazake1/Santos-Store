@@ -1,5 +1,5 @@
-/* =========================================
-   Monte seu PC — Santos Gamer
+﻿/* =========================================
+   Monte seu PC — Santos Store
    Form handling, summary preview, WhatsApp
    ========================================= */
 
@@ -113,7 +113,7 @@
     }
 
     var lines = [];
-    lines.push("🖥️ *MONTE SEU PC — Santos Gamer*");
+    lines.push("🖥️ *MONTE SEU PC — Santos Store*");
     lines.push("");
     lines.push("🎯 *Objetivo:* " + goalSelect.value);
     lines.push("💰 *Orçamento:* R$ " + budgetInput.value);

@@ -1,5 +1,5 @@
-/* =========================================
-   Upgrade + Otimização — Santos Gamer
+﻿/* =========================================
+   Upgrade + Otimização — Santos Store
    Checkbox upgrades, device toggle, WhatsApp
    ========================================= */
 
@@ -95,7 +95,7 @@
     var device = getSelectedDevice();
 
     var lines = [];
-    lines.push("🚀 *UPGRADE + OTIMIZAÇÃO — Santos Gamer*");
+    lines.push("🚀 *UPGRADE + OTIMIZAÇÃO — Santos Store*");
     lines.push("");
     lines.push("📱 *Dispositivo:* " + (device || "Não informado"));
     lines.push("");

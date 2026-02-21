@@ -1,5 +1,5 @@
-/* =========================================
-   Santos Gamer — Vitrine Page JS
+﻿/* =========================================
+   Santos Store — Vitrine Page JS
    Full catalog with categories & filters
    ========================================= */
 

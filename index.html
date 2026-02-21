@@ -1,11 +1,11 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f7f7fb" />
-  <meta name="description" content="Santos Gamer — loja gamer especializada em periféricos, hardware, upgrades e serviços técnicos." />
-  <title>Santos Gamer — Periféricos, Hardware & Serviços</title>
+  <meta name="description" content="Santos Store — loja gamer especializada em periféricos, hardware, upgrades e serviços técnicos." />
+  <title>Santos Store — Periféricos, Hardware & Serviços</title>
   <script>(function(){var t=localStorage.getItem('sg_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})()</script>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" href="assets/logo-sg.png" />
@@ -20,10 +20,10 @@
   <header class="header" id="top">
     <div class="container header__inner">
       <!-- Brand -->
-      <a class="brand" href="#top" aria-label="Santos Gamer — Ir para o início">
-        <img class="brand__logo" src="assets/LOGO SG VERMELHA PNG.png" alt="Santos Gamer Logo">
+      <a class="brand" href="#top" aria-label="Santos Store — Ir para o início">
+        <img class="brand__logo" src="assets/LOGO SG VERMELHA PNG.png" alt="Santos Store Logo">
         <span class="brand__text">
-          <strong class="brand__name">Santos Gamer</strong>
+          <strong class="brand__name">Santos Store</strong>
           <span class="brand__sub">Hardware • Periféricos • Serviços</span>
         </span>
       </a>
@@ -31,7 +31,7 @@
       <!-- Search -->
       <form class="search" role="search" aria-label="Buscar produtos">
         <svg class="search__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="searchInput" type="search" placeholder="Buscar: RTX, SSD, teclado, mouse..." autocomplete="off" />
+        <input id="searchInput" name="q" type="search" placeholder="Buscar: RTX, SSD, teclado, mouse..." autocomplete="off" />
         <button class="btn btn--solid btn--sm" type="submit" aria-label="Buscar">
           <span class="hide-mobile">Buscar</span>
           <svg class="show-mobile" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -42,7 +42,6 @@
       <div class="header__actions">
         <a class="btn btn--ghost hide-tablet" href="#produtos">Vitrine</a>
         <a class="btn btn--ghost hide-tablet" href="#servicos">Serviços</a>
-        <a class="btn btn--ghost hide-tablet" href="#monte-seu-pc">Monte seu PC</a>
 
         <!-- Theme toggle -->
         <button class="themeBtn" id="themeToggle" type="button" aria-label="Alternar tema claro/escuro">
@@ -85,7 +84,6 @@
       <div class="mobileMenu__body">
         <a class="mobileMenu__link" href="#produtos">Vitrine</a>
         <a class="mobileMenu__link" href="#servicos">Serviços</a>
-        <a class="mobileMenu__link" href="#monte-seu-pc">Monte seu PC</a>
         <a class="mobileMenu__link" href="pages/login.html" id="mobileLoginLink">Entrar / Cadastrar</a>
       </div>
       <div class="mobileMenu__foot">
@@ -180,55 +178,6 @@
       </div>
     </section>
 
-    <!-- Monte seu PC -->
-    <section class="section section--dark" id="monte-seu-pc">
-      <div class="container">
-        <div class="section__head">
-          <div>
-            <h2 class="section__title">Monte seu PC sob medida</h2>
-            <p class="section__desc">Você diz o objetivo e orçamento — e a gente monta a melhor opção.</p>
-          </div>
-        </div>
-
-        <form class="builder" id="builderForm" novalidate>
-          <div class="builder__grid">
-            <label class="field">
-              <span class="field__label">Objetivo</span>
-              <select id="goalSelect" required>
-                <option value="" disabled selected>Escolha...</option>
-                <option value="competitivo">Competitivo (FPS alto)</option>
-                <option value="stream">Jogar + Stream</option>
-                <option value="criacao">Criação (3D/edição)</option>
-                <option value="custo">Custo-benefício</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span class="field__label">Orçamento (R$)</span>
-              <input id="budgetInput" type="number" inputmode="numeric" min="1500" step="100" placeholder="Ex.: 4500" required />
-            </label>
-
-            <label class="field">
-              <span class="field__label">Preferência</span>
-              <select id="prefSelect" required>
-                <option value="" disabled selected>Escolha...</option>
-                <option value="silencioso">Mais silencioso</option>
-                <option value="rgb">Mais RGB/estética</option>
-                <option value="equilibrado">Equilibrado</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span class="field__label">Seu nome</span>
-              <input id="nameInput" type="text" placeholder="Ex.: João" required />
-            </label>
-          </div>
-
-          <button class="btn btn--solid btn--full btn--lg" type="submit">Gerar pedido de orçamento</button>
-          <p class="tiny muted" style="margin-top: 8px; text-align: center;">Depois você integra com WhatsApp, e-mail, CRM ou API.</p>
-        </form>
-      </div>
-    </section>
 
     <!-- Produtos -->
     <section class="section" id="produtos">
@@ -287,7 +236,7 @@
           <a class="brand brand--footer" href="#top" aria-label="Ir para o início">
             <span class="brand__mark" aria-hidden="true">SG</span>
             <span class="brand__text">
-              <strong class="brand__name">Santos Gamer</strong>
+              <strong class="brand__name">Santos Store</strong>
               <span class="brand__sub">Hardware • Periféricos • Serviços</span>
             </span>
           </a>
@@ -299,7 +248,6 @@
             <strong class="footer__col-title">Navegação</strong>
             <a href="#produtos">Produtos</a>
             <a href="#servicos">Serviços</a>
-            <a href="#monte-seu-pc">Monte seu PC</a>
           </div>
           <div class="footer__col">
             <strong class="footer__col-title">Atendimento</strong>
@@ -311,7 +259,7 @@
       </div>
 
       <div class="footer__bottom">
-        <span>&copy; 2026 Santos Gamer. Todos os direitos reservados.</span>
+        <span>&copy; 2026 Santos Store. Todos os direitos reservados.</span>
       </div>
     </div>
   </footer>

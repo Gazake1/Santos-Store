@@ -1,5 +1,5 @@
-/* =========================================
-   Santos Gamer — Cart Module (Shared)
+﻿/* =========================================
+   Santos Store — Cart Module (Shared)
    Included by every page. Manages cart state,
    the cart drawer UI, server sync with JWT,
    badge rendering and purchase history.
@@ -328,7 +328,7 @@ window.SgCart = (function () {
       return "• " + i.qty + "x " + i.name + " — " + BRL.format(i.price * i.qty);
     }).join("\n");
     var total = BRL.format(getTotal());
-    var msg = encodeURIComponent("Olá! Gostaria de finalizar minha compra na Santos Gamer:\n\n" + cartText + "\n\nTotal: " + total);
+    var msg = encodeURIComponent("Olá! Gostaria de finalizar minha compra na Santos Store:\n\n" + cartText + "\n\nTotal: " + total);
     window.open("https://wa.me/" + WA_NUMBER + "?text=" + msg, "_blank");
     clear();
     showToast("Redirecionando para WhatsApp...");

@@ -1,5 +1,5 @@
-/* =========================================
-   Limpeza — Santos Gamer
+﻿/* =========================================
+   Limpeza — Santos Store
    Tier selection, extras, WhatsApp redirect
    ========================================= */
 
@@ -110,7 +110,7 @@
     var extras = getExtras();
 
     var lines = [];
-    lines.push("🧹 *LIMPEZA — Santos Gamer*");
+    lines.push("🧹 *LIMPEZA — Santos Store*");
     lines.push("");
     lines.push("📱 *Dispositivo:* " + (device || "Não informado"));
     lines.push("✨ *Tipo de limpeza:* " + tier);

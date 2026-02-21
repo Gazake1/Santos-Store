@@ -1,5 +1,5 @@
-/* =========================================
-   Santos Gamer — Minha Conta (Frontend)
+﻿/* =========================================
+   Santos Store — Minha Conta (Frontend)
    Profile panel, data persistence, prefs
    ========================================= */
 

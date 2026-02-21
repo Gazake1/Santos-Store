@@ -1,5 +1,5 @@
-/* =========================================
-   Santos Gamer — App (Vanilla JS)
+﻿/* =========================================
+   Santos Store — App (Vanilla JS)
    UI/UX aprimorada: toast, swipe, debounce,
    mobile menu, back-to-top, a11y
    ========================================= */
@@ -142,12 +142,6 @@ const els = {
   maxPriceInput:   $("#maxPriceInput"),
   clearFiltersBtn: $("#clearFiltersBtn"),
 
-  builderForm: $("#builderForm"),
-  goalSelect:  $("#goalSelect"),
-  budgetInput: $("#budgetInput"),
-  prefSelect:  $("#prefSelect"),
-  nameInput:   $("#nameInput"),
-
   promoCarousel: $("#promoCarousel"),
   carouselTrack: $("#carouselTrack"),
   prevSlideBtn:  $("#prevSlideBtn"),
@@ -179,7 +173,22 @@ function init() {
   initLoginBtn();
   renderCategoryChips();
   bindEvents();
+
+  // Read URL search param (from other pages redirecting here)
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlQuery = (urlParams.get("q") || "").trim();
+  if (urlQuery && els.searchInput) {
+    els.searchInput.value = urlQuery;
+    state.query = urlQuery;
+  }
+
   renderProducts();
+
+  // Auto-scroll to products if search query present
+  if (urlQuery) {
+    setTimeout(() => scrollToSection("produtos"), 300);
+  }
+
   if (window.SgCart) { SgCart.registerProducts(PRODUCTS); SgCart.renderBadge(); }
   initPromoCarousel();
   initQuickLinks();
@@ -310,12 +319,14 @@ function bindEvents() {
     e.preventDefault();
     state.query = (els.searchInput.value || "").trim();
     renderProducts();
+    scrollToSection("produtos");
   });
 
   // Search debounced typing
   const debouncedSearch = debounce(() => {
     state.query = (els.searchInput.value || "").trim();
     renderProducts();
+    if (state.query) scrollToSection("produtos");
   }, 200);
   els.searchInput.addEventListener("input", debouncedSearch);
 
@@ -354,31 +365,6 @@ function bindEvents() {
       if (window.SgCart) SgCart.close();
       closeMobileMenu();
     }
-  });
-
-  // Builder form
-  els.builderForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    // Custom validation
-    if (!els.builderForm.checkValidity()) {
-      els.builderForm.reportValidity();
-      return;
-    }
-
-    const payload = {
-      goal: els.goalSelect.value,
-      budget: Number(els.budgetInput.value),
-      pref: els.prefSelect.value,
-      name: (els.nameInput.value || "").trim(),
-    };
-
-    if (window.SgCart) {
-      SgCart.openWhatsAppBuild(payload);
-    } else {
-      showToast(`Orçamento gerado, ${payload.name}! Em breve entraremos em contato.`, "success", 4500);
-    }
-    els.builderForm.reset();
   });
 }
 
