@@ -5,11 +5,28 @@ import { writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 import crypto from "crypto";
-import { requireAdmin } from "@/lib/auth";
+
+/* inline admin check to avoid alias issues in Docker */
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import { getDb } from "../../../../lib/db";
+
+function getAdmin(req: Request) {
+  const auth = req.headers.get("authorization") || "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  if (!token) return null;
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET || "secret") as { id: number };
+    const db = getDb();
+    const user = db.prepare("SELECT * FROM users WHERE id = ?").get(payload.id) as Record<string, unknown> | undefined;
+    if (!user || user.role !== "admin") return null;
+    return user;
+  } catch { return null; }
+}
 
 export async function POST(req: Request) {
-  const result = requireAdmin(req);
-  if (result instanceof Response) return result;
+  const admin = getAdmin(req);
+  if (!admin) return NextResponse.json({ error: "Admin only" }, { status: 403 });
 
   const formData = await req.formData();
   const file = formData.get("image") as File | null;
