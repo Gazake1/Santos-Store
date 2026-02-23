@@ -4,11 +4,20 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 
-const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-
 const CATEGORIES = ["Todos","Notebook","PC Gamer","Monitor","Placa de Vídeo","Processador","Mouse","Teclado","Headset","Mousepad","SSD","Memória RAM","Cadeira","Acessórios"];
 
-const PRODUCTS = [
+interface VProduct {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  sold: number;
+  tag: string;
+  image: string;
+  slug: string;
+}
+
+const HARDCODED: VProduct[] = [
   { id: "mousepad-fallen", name: "Mousepad Gamer Fallen Ace Speed++ 45x45cm", category: "Mousepad", price: 197.9, sold: 3100, tag: "Mais vendido", image: "/assets/img/Mousepad.png", slug: "mousepad-fallen" },
   { id: "mousepad-rise-g", name: "Mousepad Rise Gaming Grande Speed 42x29cm", category: "Mousepad", price: 79.9, sold: 1800, tag: "Oferta", image: "", slug: "" },
   { id: "mousepad-logitech-xl", name: "Mousepad Logitech G840 XL 90x40cm", category: "Mousepad", price: 249.9, sold: 920, tag: "", image: "", slug: "" },
@@ -64,10 +73,34 @@ function normalize(str: string) {
 }
 
 export default function VitrinePage() {
+  const [allProducts, setAllProducts] = useState<VProduct[]>(HARDCODED);
   const [category, setCategory] = useState("Todos");
   const [sort, setSort] = useState("relevancia");
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [query, setQuery] = useState("");
+
+  /* Load DB products and merge (DB products appear first) */
+  useEffect(() => {
+    fetch("/api/products")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.products?.length) {
+          const dbProducts: VProduct[] = data.products.map((p: Record<string, unknown>) => ({
+            id: `db-${p.id}`,
+            name: p.title as string,
+            category: (p.category as string) || "",
+            price: p.price as number,
+            sold: (p.sold as number) || 0,
+            tag: (p.tag as string) || "",
+            image: (Array.isArray(p.images) && p.images.length > 0) ? p.images[0] : "",
+            slug: p.slug as string || "",
+          }));
+          // Merge: DB products first, then hardcoded
+          setAllProducts([...dbProducts, ...HARDCODED]);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search).get("q") || "";
@@ -75,7 +108,7 @@ export default function VitrinePage() {
   }, []);
 
   const filtered = (() => {
-    let list = [...PRODUCTS];
+    let list = [...allProducts];
     if (category !== "Todos") list = list.filter(p => p.category === category);
     if (query) { const q = normalize(query); list = list.filter(p => normalize(p.name).includes(q) || normalize(p.category).includes(q)); }
     if (maxPrice) list = list.filter(p => p.price <= maxPrice);

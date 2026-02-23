@@ -77,8 +77,10 @@ export default function AdminPage() {
   const [editingBannerId, setEditingBannerId] = useState<number | null>(null);
   const [bannerForm, setBannerForm] = useState({ image_url: "", alt_text: "", link_url: "", bg1: "rgba(197,30,48,.20)", bg2: "rgba(255,255,255,.06)", sort_order: 0, active: true });
   const [savingBanner, setSavingBanner] = useState(false);
+  const [bannerPendingFile, setBannerPendingFile] = useState<File | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const bannerFileRef = useRef<HTMLInputElement>(null);
 
   const headers = useCallback((json = true) => {
     const h: Record<string, string> = { Authorization: `Bearer ${token}` };
@@ -157,6 +159,7 @@ export default function AdminPage() {
   const openCreateBanner = () => {
     setEditingBannerId(null);
     setBannerForm({ image_url: "", alt_text: "", link_url: "", bg1: "rgba(197,30,48,.20)", bg2: "rgba(255,255,255,.06)", sort_order: banners.length, active: true });
+    setBannerPendingFile(null);
     setBannerModalOpen(true);
   };
 
@@ -167,19 +170,34 @@ export default function AdminPage() {
       bg1: b.bg1 || "rgba(197,30,48,.20)", bg2: b.bg2 || "rgba(255,255,255,.06)",
       sort_order: b.sort_order ?? 0, active: !!b.active,
     });
+    setBannerPendingFile(null);
     setBannerModalOpen(true);
   };
 
-  const closeBannerModal = () => { setBannerModalOpen(false); setEditingBannerId(null); };
+  const closeBannerModal = () => { setBannerModalOpen(false); setEditingBannerId(null); setBannerPendingFile(null); };
 
   const saveBanner = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!bannerForm.image_url.trim()) { showToast("URL da imagem é obrigatória", "error"); return; }
+    let imageUrl = bannerForm.image_url;
+
+    // Upload file if selected
+    if (bannerPendingFile) {
+      const fd = new FormData();
+      fd.append("image", bannerPendingFile);
+      try {
+        const uploadRes = await fetch("/api/admin/upload", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: fd });
+        if (!uploadRes.ok) throw new Error((await uploadRes.json()).error || "Erro no upload");
+        const uploadData = await uploadRes.json();
+        imageUrl = uploadData.url;
+      } catch (err: unknown) { showToast((err as Error).message, "error"); return; }
+    }
+
+    if (!imageUrl.trim()) { showToast("Selecione uma imagem ou informe a URL", "error"); return; }
     setSavingBanner(true);
     try {
       const url = editingBannerId ? `/api/admin/banners/${editingBannerId}` : "/api/admin/banners";
       const method = editingBannerId ? "PUT" : "POST";
-      const res = await fetch(url, { method, headers: headers(), body: JSON.stringify({ ...bannerForm, active: bannerForm.active }) });
+      const res = await fetch(url, { method, headers: headers(), body: JSON.stringify({ ...bannerForm, image_url: imageUrl, active: bannerForm.active }) });
       if (!res.ok) throw new Error((await res.json()).error || "Erro");
       showToast(editingBannerId ? "Banner atualizado!" : "Banner criado!", "success");
       closeBannerModal();
@@ -497,12 +515,21 @@ export default function AdminPage() {
             <h2>{editingBannerId ? "Editar Banner" : "Novo Banner"}</h2>
             <form className="admin__form" onSubmit={saveBanner} noValidate>
               <div className="admin__field admin__field--full">
-                <label>URL da Imagem *</label>
-                <input type="text" placeholder="/assets/img/banner.webp ou https://..." required value={bannerForm.image_url} onChange={e => setBannerForm(f => ({ ...f, image_url: e.target.value }))} />
+                <label>Imagem do Banner *</label>
+                <div className="admin__upload-zone" onClick={() => bannerFileRef.current?.click()}
+                  onDragOver={e => { e.preventDefault(); e.currentTarget.classList.add("dragover"); }}
+                  onDragLeave={e => e.currentTarget.classList.remove("dragover")}
+                  onDrop={e => { e.preventDefault(); e.currentTarget.classList.remove("dragover"); const f = e.dataTransfer.files[0]; if (f?.type.startsWith("image/")) { setBannerPendingFile(f); setBannerForm(prev => ({ ...prev, image_url: URL.createObjectURL(f) })); } }}
+                >
+                  🖼️ Clique ou arraste uma imagem aqui (máx. 5MB)
+                  <input ref={bannerFileRef} type="file" accept="image/*" hidden onChange={e => { const f = e.target.files?.[0]; if (f) { setBannerPendingFile(f); setBannerForm(prev => ({ ...prev, image_url: URL.createObjectURL(f) })); } e.target.value = ""; }} />
+                </div>
+                <p className="small muted" style={{ marginTop: 6 }}>Ou cole uma URL abaixo:</p>
+                <input type="text" placeholder="/assets/img/banner.webp ou https://..." value={bannerPendingFile ? bannerPendingFile.name : bannerForm.image_url} onChange={e => { setBannerPendingFile(null); setBannerForm(f => ({ ...f, image_url: e.target.value })); }} style={{ marginTop: 4 }} />
               </div>
-              {bannerForm.image_url && (
+              {(bannerForm.image_url || bannerPendingFile) && (
                 <div className="admin__field admin__field--full" style={{ marginBottom: 12 }}>
-                  <img src={bannerForm.image_url} alt="Preview" style={{ width: "100%", maxHeight: 160, objectFit: "cover", borderRadius: 8, border: "1px solid var(--stroke)" }} />
+                  <img src={bannerPendingFile ? URL.createObjectURL(bannerPendingFile) : bannerForm.image_url} alt="Preview" style={{ width: "100%", maxHeight: 160, objectFit: "cover", borderRadius: 8, border: "1px solid var(--stroke)" }} />
                 </div>
               )}
               <div className="admin__field admin__field--full">

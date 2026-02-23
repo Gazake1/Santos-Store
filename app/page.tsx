@@ -128,6 +128,29 @@ export default function Home() {
   const [sort, setSort] = useState("relevancia");
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [query, setQuery] = useState("");
+  const [allProducts, setAllProducts] = useState(PRODUCTS);
+
+  /* Load DB products and merge with hardcoded */
+  useEffect(() => {
+    fetch("/api/products")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.products?.length) {
+          const dbItems = data.products.map((p: Record<string, unknown>) => ({
+            id: `db-${p.id}`,
+            name: p.title as string,
+            category: (p.category as string) || "",
+            price: p.price as number,
+            sold: (p.sold as number) || 0,
+            tag: (p.tag as string) || "",
+            image: (Array.isArray(p.images) && p.images.length > 0) ? p.images[0] : "",
+            slug: (p.slug as string) || "",
+          }));
+          setAllProducts([...dbItems, ...PRODUCTS]);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   /* Read query param on mount */
   useEffect(() => {
@@ -136,7 +159,7 @@ export default function Home() {
   }, []);
 
   const filtered = (() => {
-    let list = [...PRODUCTS];
+    let list = [...allProducts];
     if (query) { const q = normalize(query); list = list.filter(p => normalize(p.name).includes(q) || normalize(p.category).includes(q)); }
     if (maxPrice) list = list.filter(p => p.price <= maxPrice);
     switch (sort) {
