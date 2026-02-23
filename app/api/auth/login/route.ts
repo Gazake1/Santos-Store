@@ -14,7 +14,9 @@ export async function POST(req: Request) {
   }
 
   const { email, password } = await req.json();
-  if (!email || !password) return NextResponse.json({ error: "Preencha e-mail e senha" }, { status: 400 });
+  if (!email || !password || typeof email !== "string" || typeof password !== "string") {
+    return NextResponse.json({ error: "Preencha e-mail e senha" }, { status: 400 });
+  }
 
   const user = findUserByEmail(email.trim().toLowerCase());
   if (!user || !bcrypt.compareSync(password, user.password)) {
