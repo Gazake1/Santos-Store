@@ -1,11 +1,11 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/auth";
 import { writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 import crypto from "crypto";
+import { requireAdmin } from "@/lib/auth";
 
 export async function POST(req: Request) {
   const result = requireAdmin(req);
