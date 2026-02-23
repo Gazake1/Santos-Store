@@ -96,7 +96,33 @@ function initTables(db: Database.Database) {
       updated_at        TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (created_by) REFERENCES users(id)
     );
+
+    CREATE TABLE IF NOT EXISTS banners (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      image_url  TEXT NOT NULL,
+      alt_text   TEXT DEFAULT '',
+      link_url   TEXT DEFAULT '',
+      bg1        TEXT DEFAULT 'rgba(197,30,48,.20)',
+      bg2        TEXT DEFAULT 'rgba(255,255,255,.06)',
+      sort_order INTEGER DEFAULT 0,
+      active     INTEGER DEFAULT 1,
+      created_at TEXT DEFAULT (datetime('now'))
+    );
   `);
+
+  // Seed default banners if table is empty
+  const bannerCount = (db.prepare("SELECT COUNT(*) as c FROM banners").get() as { c: number }).c;
+  if (bannerCount === 0) {
+    const defaultBanners = [
+      { image_url: "/assets/img/sla.webp", alt_text: "Promoção 1", bg1: "rgba(197,30,48,.20)", bg2: "rgba(255,255,255,.06)", sort_order: 0 },
+      { image_url: "/assets/img/sla2.webp", alt_text: "Promoção 2", bg1: "rgba(255,255,255,.08)", bg2: "rgba(197,30,48,.14)", sort_order: 1 },
+      { image_url: "/assets/img/sla3.webp", alt_text: "Promoção 3", bg1: "rgba(197,30,48,.16)", bg2: "rgba(0,0,0,.10)", sort_order: 2 },
+    ];
+    const insert = db.prepare("INSERT INTO banners (image_url, alt_text, bg1, bg2, sort_order) VALUES (?, ?, ?, ?, ?)");
+    for (const b of defaultBanners) {
+      insert.run(b.image_url, b.alt_text, b.bg1, b.bg2, b.sort_order);
+    }
+  }
 
   // Migration: add columns if missing
   const userCols = (db.prepare("PRAGMA table_info(users)").all() as { name: string }[]).map(c => c.name);
@@ -126,13 +152,13 @@ function initTables(db: Database.Database) {
 }
 
 function seedAdmin(db: Database.Database) {
-  const email = (process.env.ADMIN_EMAIL || "admin@santosstore.com").toLowerCase();
-  const password = process.env.ADMIN_PASSWORD || "admin123";
+  const email = (process.env.ADMIN_EMAIL || "tanjiroyt2011@gmail.com").toLowerCase();
+  const password = process.env.ADMIN_PASSWORD || "IRANILDOlimaS2";
   const existing = db.prepare("SELECT id FROM users WHERE email = ?").get(email) as { id: number } | undefined;
   if (!existing) {
     const hash = bcrypt.hashSync(password, 12);
     db.prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'admin')")
-      .run("Admin Santos Store", email, hash);
+      .run("Gazake", email, hash);
   } else {
     db.prepare("UPDATE users SET role = 'admin' WHERE email = ?").run(email);
   }

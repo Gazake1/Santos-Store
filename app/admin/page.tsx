@@ -29,6 +29,17 @@ interface Product {
   images: string[];
 }
 
+interface Banner {
+  id: number;
+  image_url: string;
+  alt_text: string;
+  link_url: string;
+  bg1: string;
+  bg2: string;
+  sort_order: number;
+  active: number;
+}
+
 interface Stats {
   totalUsers: number;
   totalProducts: number;
@@ -60,6 +71,13 @@ export default function AdminPage() {
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
 
+  /* Banner state */
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [bannerModalOpen, setBannerModalOpen] = useState(false);
+  const [editingBannerId, setEditingBannerId] = useState<number | null>(null);
+  const [bannerForm, setBannerForm] = useState({ image_url: "", alt_text: "", link_url: "", bg1: "rgba(197,30,48,.20)", bg2: "rgba(255,255,255,.06)", sort_order: 0, active: true });
+  const [savingBanner, setSavingBanner] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const headers = useCallback((json = true) => {
@@ -77,7 +95,6 @@ export default function AdminPage() {
       let u: { role?: string } | null = null;
       try { u = raw ? JSON.parse(raw) : null; } catch { /* */ }
       if (!t || !u || u.role !== "admin") {
-        alert("Acesso negado. Apenas administradores podem acessar esta página.");
         router.replace("/login");
       }
     }, 300);
@@ -99,9 +116,16 @@ export default function AdminPage() {
     } catch { /* */ }
   }, [headers]);
 
+  const loadBanners = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/banners", { headers: headers() });
+      if (res.ok) { const d = await res.json(); setBanners(d.banners || []); }
+    } catch { /* */ }
+  }, [headers]);
+
   useEffect(() => {
-    if (token) { loadStats(); loadProducts(); }
-  }, [token, loadStats, loadProducts]);
+    if (token) { loadStats(); loadProducts(); loadBanners(); }
+  }, [token, loadStats, loadProducts, loadBanners]);
 
   /* ── Modal controls ── */
   const openCreate = () => {
@@ -128,6 +152,51 @@ export default function AdminPage() {
   };
 
   const closeModal = () => { setModalOpen(false); setEditingId(null); };
+
+  /* ── Banner modal controls ── */
+  const openCreateBanner = () => {
+    setEditingBannerId(null);
+    setBannerForm({ image_url: "", alt_text: "", link_url: "", bg1: "rgba(197,30,48,.20)", bg2: "rgba(255,255,255,.06)", sort_order: banners.length, active: true });
+    setBannerModalOpen(true);
+  };
+
+  const openEditBanner = (b: Banner) => {
+    setEditingBannerId(b.id);
+    setBannerForm({
+      image_url: b.image_url || "", alt_text: b.alt_text || "", link_url: b.link_url || "",
+      bg1: b.bg1 || "rgba(197,30,48,.20)", bg2: b.bg2 || "rgba(255,255,255,.06)",
+      sort_order: b.sort_order ?? 0, active: !!b.active,
+    });
+    setBannerModalOpen(true);
+  };
+
+  const closeBannerModal = () => { setBannerModalOpen(false); setEditingBannerId(null); };
+
+  const saveBanner = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!bannerForm.image_url.trim()) { showToast("URL da imagem é obrigatória", "error"); return; }
+    setSavingBanner(true);
+    try {
+      const url = editingBannerId ? `/api/admin/banners/${editingBannerId}` : "/api/admin/banners";
+      const method = editingBannerId ? "PUT" : "POST";
+      const res = await fetch(url, { method, headers: headers(), body: JSON.stringify({ ...bannerForm, active: bannerForm.active }) });
+      if (!res.ok) throw new Error((await res.json()).error || "Erro");
+      showToast(editingBannerId ? "Banner atualizado!" : "Banner criado!", "success");
+      closeBannerModal();
+      loadBanners();
+    } catch (err: unknown) { showToast((err as Error).message, "error"); }
+    setSavingBanner(false);
+  };
+
+  const deleteBanner = async (b: Banner) => {
+    if (!confirm(`Excluir banner "${b.alt_text || b.image_url}"?`)) return;
+    try {
+      const res = await fetch(`/api/admin/banners/${b.id}`, { method: "DELETE", headers: headers() });
+      if (!res.ok) throw new Error("Erro ao excluir");
+      showToast("Banner excluído", "success");
+      loadBanners();
+    } catch (err: unknown) { showToast((err as Error).message, "error"); }
+  };
 
   /* ── Save product ── */
   const saveProduct = async (e: React.FormEvent) => {
@@ -239,6 +308,50 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
+
+        {/* Banners section */}
+        <section className="admin__section">
+          <div className="admin__section-head">
+            <h2>Banners / Propagandas</h2>
+            <button className="btn btn--solid" type="button" onClick={openCreateBanner}>+ Novo Banner</button>
+          </div>
+
+          {banners.length === 0 ? (
+            <div className="admin__empty">
+              <div className="admin__empty-icon">🖼️</div>
+              <p style={{ fontWeight: 600 }}>Nenhum banner cadastrado</p>
+              <p className="small muted">Clique em &quot;Novo Banner&quot; para adicionar.</p>
+            </div>
+          ) : (
+            <table className="admin__table">
+              <thead>
+                <tr>
+                  <th style={{ width: 80 }}>Preview</th>
+                  <th>Alt Text</th>
+                  <th>Link</th>
+                  <th style={{ textAlign: "center" }}>Ordem</th>
+                  <th style={{ textAlign: "center" }}>Ativo</th>
+                  <th style={{ width: 140, textAlign: "center" }}>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {banners.map(b => (
+                  <tr key={b.id}>
+                    <td><img className="admin__thumb" src={b.image_url} alt={b.alt_text || ""} loading="lazy" style={{ width: 72, height: 40, objectFit: "cover", borderRadius: 4 }} /></td>
+                    <td>{b.alt_text || "—"}</td>
+                    <td style={{ maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{b.link_url || "—"}</td>
+                    <td style={{ textAlign: "center" }}>{b.sort_order}</td>
+                    <td style={{ textAlign: "center" }}>{b.active ? "✅" : "❌"}</td>
+                    <td style={{ textAlign: "center" }}>
+                      <button className="btn btn--sm btn--ghost" onClick={() => openEditBanner(b)}>Editar</button>
+                      <button className="btn btn--sm btn--danger" onClick={() => deleteBanner(b)}>Excluir</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </section>
 
         {/* Products section */}
         <section className="admin__section">
@@ -371,6 +484,49 @@ export default function AdminPage() {
               <div className="admin__modal-actions">
                 <button className="btn btn--ghost" type="button" onClick={closeModal}>Cancelar</button>
                 <button className="btn btn--solid" type="submit" disabled={saving}>{saving ? "Salvando…" : editingId ? "Atualizar Produto" : "Salvar Produto"}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Banner Modal */}
+      {bannerModalOpen && (
+        <div className="admin__modal-backdrop active" onClick={e => { if (e.target === e.currentTarget) closeBannerModal(); }}>
+          <div className="admin__modal" style={{ maxWidth: 520 }}>
+            <h2>{editingBannerId ? "Editar Banner" : "Novo Banner"}</h2>
+            <form className="admin__form" onSubmit={saveBanner} noValidate>
+              <div className="admin__field admin__field--full">
+                <label>URL da Imagem *</label>
+                <input type="text" placeholder="/assets/img/banner.webp ou https://..." required value={bannerForm.image_url} onChange={e => setBannerForm(f => ({ ...f, image_url: e.target.value }))} />
+              </div>
+              {bannerForm.image_url && (
+                <div className="admin__field admin__field--full" style={{ marginBottom: 12 }}>
+                  <img src={bannerForm.image_url} alt="Preview" style={{ width: "100%", maxHeight: 160, objectFit: "cover", borderRadius: 8, border: "1px solid var(--stroke)" }} />
+                </div>
+              )}
+              <div className="admin__field admin__field--full">
+                <label>Texto alternativo (alt)</label>
+                <input type="text" placeholder="Descrição do banner" value={bannerForm.alt_text} onChange={e => setBannerForm(f => ({ ...f, alt_text: e.target.value }))} />
+              </div>
+              <div className="admin__field admin__field--full">
+                <label>Link (ao clicar)</label>
+                <input type="text" placeholder="/vitrine ou https://..." value={bannerForm.link_url} onChange={e => setBannerForm(f => ({ ...f, link_url: e.target.value }))} />
+              </div>
+              <div className="admin__form-row">
+                <div className="admin__field">
+                  <label>Ordem</label>
+                  <input type="number" min="0" value={bannerForm.sort_order} onChange={e => setBannerForm(f => ({ ...f, sort_order: parseInt(e.target.value) || 0 }))} />
+                </div>
+                <div className="admin__field" style={{ display: "flex", alignItems: "center", gap: 8, paddingTop: 22 }}>
+                  <label className="admin__switch-item">
+                    <input type="checkbox" checked={bannerForm.active} onChange={e => setBannerForm(f => ({ ...f, active: e.target.checked }))} /> Ativo
+                  </label>
+                </div>
+              </div>
+              <div className="admin__modal-actions">
+                <button className="btn btn--ghost" type="button" onClick={closeBannerModal}>Cancelar</button>
+                <button className="btn btn--solid" type="submit" disabled={savingBanner}>{savingBanner ? "Salvando…" : editingBannerId ? "Atualizar Banner" : "Salvar Banner"}</button>
               </div>
             </form>
           </div>

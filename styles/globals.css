@@ -14,7 +14,9 @@
 
   --bg: #f7f7fb;
   --bg-body: var(--bg);
+  --bg-alt: #f0f0f5;
   --card: #ffffff;
+  --surface: #ffffff;
   --stroke: rgba(0, 0, 0, .08);
   --stroke2: rgba(0, 0, 0, .12);
   --border: rgba(0, 0, 0, .10);
@@ -59,7 +61,9 @@
 [data-theme="dark"] {
   --bg: #0f0f12;
   --bg-body: var(--bg);
+  --bg-alt: #16161e;
   --card: #171720;
+  --surface: #1c1c28;
   --stroke: rgba(255, 255, 255, .08);
   --stroke2: rgba(255, 255, 255, .12);
   --border: rgba(255, 255, 255, .10);
@@ -458,6 +462,11 @@ ul, ol { list-style: none; }
 }
 .mobileMenu__link:hover { background: rgba(0, 0, 0, .04); }
 [data-theme="dark"] .mobileMenu__link:hover { background: rgba(255, 255, 255, .06); }
+.mobileMenu__link--admin { color: var(--red); font-weight: 600; }
+
+/* Admin link in header */
+.adminLink { color: var(--red) !important; font-weight: 600; gap: 6px; display: inline-flex; align-items: center; }
+.adminLink svg { flex-shrink: 0; }
 
 .mobileMenu__foot {
   padding: var(--sp-4);

@@ -84,7 +84,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const merged = [...localCart];
         data.cart.forEach((item: { product_id: string; quantity: number; name: string; price: number; category: string }) => {
           const idx = merged.findIndex((m: { product_id: string }) => m.product_id === item.product_id);
-          if (idx === -1) merged.push(item);
+          if (idx === -1) {
+            merged.push(item);
+          } else {
+            // Update metadata (name, price, category) from server if local has price=0
+            if (!merged[idx].price && item.price) {
+              merged[idx].name = item.name || merged[idx].name;
+              merged[idx].price = item.price;
+              merged[idx].category = item.category || merged[idx].category;
+            }
+          }
         });
         localStorage.setItem("sg_cart", JSON.stringify(merged));
       }

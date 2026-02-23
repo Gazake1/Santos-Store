@@ -30,27 +30,52 @@ function normalize(str: string) {
 }
 
 /* ── Carousel ── */
+interface BannerData {
+  id: number;
+  image_url: string;
+  alt_text: string;
+  link_url: string;
+  bg1: string;
+  bg2: string;
+}
+
+const FALLBACK_BANNERS: BannerData[] = [
+  { id: 1, image_url: "/assets/img/sla.webp", alt_text: "Promoção 1", link_url: "", bg1: "rgba(197,30,48,.20)", bg2: "rgba(255,255,255,.06)" },
+  { id: 2, image_url: "/assets/img/sla2.webp", alt_text: "Promoção 2", link_url: "", bg1: "rgba(255,255,255,.08)", bg2: "rgba(197,30,48,.14)" },
+  { id: 3, image_url: "/assets/img/sla3.webp", alt_text: "Promoção 3", link_url: "", bg1: "rgba(197,30,48,.16)", bg2: "rgba(0,0,0,.10)" },
+];
+
 function Carousel() {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [banners, setBanners] = useState<BannerData[]>(FALLBACK_BANNERS);
   const touchStart = useRef(0);
-  const total = 3;
 
-  const goTo = useCallback((i: number) => setIndex(((i % total) + total) % total), []);
+  useEffect(() => {
+    fetch("/api/banners")
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.banners?.length) setBanners(d.banners); })
+      .catch(() => {});
+  }, []);
+
+  const total = banners.length;
+  const goTo = useCallback((i: number) => setIndex(((i % total) + total) % total), [total]);
   const next = useCallback(() => goTo(index + 1), [index, goTo]);
   const prev = useCallback(() => goTo(index - 1), [index, goTo]);
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || total === 0) return;
     const timer = setInterval(() => goTo(index + 1), 5500);
     return () => clearInterval(timer);
-  }, [index, isPaused, goTo]);
+  }, [index, isPaused, goTo, total]);
 
   useEffect(() => {
     const handler = () => { if (document.hidden) setIsPaused(true); else setIsPaused(false); };
     document.addEventListener("visibilitychange", handler);
     return () => document.removeEventListener("visibilitychange", handler);
   }, []);
+
+  if (total === 0) return null;
 
   return (
     <section className="homeHero" aria-label="Promoções">
@@ -69,15 +94,17 @@ function Carousel() {
         tabIndex={0}
       >
         <div className="carousel__track" style={{ transform: `translateX(-${index * 100}%)` }}>
-          <article className="slide" style={{ "--bg1": "rgba(197,30,48,.20)", "--bg2": "rgba(255,255,255,.06)" } as React.CSSProperties}>
-            <div className="mediaPlaceholder"><img src="/assets/img/sla.webp" alt="Promoção 1" /></div>
-          </article>
-          <article className="slide" style={{ "--bg1": "rgba(255,255,255,.08)", "--bg2": "rgba(197,30,48,.14)" } as React.CSSProperties}>
-            <div className="mediaPlaceholder"><img src="/assets/img/sla2.webp" alt="Promoção 2" /></div>
-          </article>
-          <article className="slide" style={{ "--bg1": "rgba(197,30,48,.16)", "--bg2": "rgba(0,0,0,.10)" } as React.CSSProperties}>
-            <div className="mediaPlaceholder"><img src="/assets/img/sla3.webp" alt="Promoção 3" /></div>
-          </article>
+          {banners.map(b => (
+            <article key={b.id} className="slide" style={{ "--bg1": b.bg1, "--bg2": b.bg2 } as React.CSSProperties}>
+              <div className="mediaPlaceholder">
+                {b.link_url ? (
+                  <a href={b.link_url}><img src={b.image_url} alt={b.alt_text || ""} /></a>
+                ) : (
+                  <img src={b.image_url} alt={b.alt_text || ""} />
+                )}
+              </div>
+            </article>
+          ))}
         </div>
 
         <button className="carousel__btn carousel__btn--prev" type="button" aria-label="Banner anterior" onClick={prev}>
@@ -88,7 +115,7 @@ function Carousel() {
         </button>
 
         <div className="carousel__dots" role="tablist" aria-label="Navegação do carrossel">
-          {[0, 1, 2].map(i => (
+          {banners.map((_, i) => (
             <button key={i} className={`dot${i === index ? " is-active" : ""}`} type="button" role="tab" aria-label={`Banner ${i + 1}`} aria-selected={i === index} onClick={() => setIndex(i)} />
           ))}
         </div>

@@ -57,6 +57,13 @@ export default function Header() {
             <Link className="btn btn--ghost hide-tablet" href="/vitrine">Vitrine</Link>
             <Link className="btn btn--ghost hide-tablet" href="/#servicos">Serviços</Link>
 
+            {user?.role === "admin" && (
+              <Link className="btn btn--ghost adminLink hide-tablet" href="/admin" title="Painel Admin">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span>Admin</span>
+              </Link>
+            )}
+
             <button className="themeBtn" type="button" aria-label="Alternar tema claro/escuro" onClick={toggle}>
               <svg className="themeBtn__icon themeBtn__icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
               <svg className="themeBtn__icon themeBtn__icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -98,6 +105,11 @@ export default function Header() {
             <Link className="mobileMenu__link" href={user ? "/minha-conta" : "/login"} onClick={() => setMenuOpen(false)}>
               {user ? "Minha Conta" : "Entrar / Cadastrar"}
             </Link>
+            {user?.role === "admin" && (
+              <Link className="mobileMenu__link mobileMenu__link--admin" href="/admin" onClick={() => setMenuOpen(false)}>
+                ⚙️ Painel Admin
+              </Link>
+            )}
           </div>
           <div className="mobileMenu__foot">
             <span className="muted small">Ribeirão Preto e região • Brasil</span>
