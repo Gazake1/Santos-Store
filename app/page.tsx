@@ -9,22 +9,6 @@ import ProductCard from "@/components/ProductCard";
 
 const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
-/* ── Hardcoded products for the home page ── */
-const PRODUCTS = [
-  { id: "mousepad-fallen", name: "Mousepad Gamer Fallen Ace Speed++ Antiderrapante 45x45cm", category: "Acessórios", price: 197.9, sold: 3100, tag: "Mais vendido", image: "/assets/img/Mousepad.png", slug: "mousepad-fallen" },
-  { id: "gpu-rtx4060", name: "Placa de Vídeo RTX 4060 8GB GDDR6 128-bit", category: "Placa de Vídeo", price: 2499.9, sold: 870, tag: "Top", image: "", slug: "" },
-  { id: "cpu-ryzen5-7600", name: "Processador AMD Ryzen 5 7600 3.8GHz AM5", category: "Processador", price: 1149.9, sold: 640, tag: "Custo-benefício", image: "", slug: "" },
-  { id: "ssd-kingston-1tb", name: "SSD Kingston NV3 NVMe 1TB M.2 2280", category: "SSD", price: 319.9, sold: 2200, tag: "Oferta", image: "", slug: "" },
-  { id: "ram-corsair-16", name: "Memória RAM Corsair Vengeance 16GB DDR5 5200MHz", category: "Memória RAM", price: 399.9, sold: 980, tag: "DDR5", image: "", slug: "" },
-  { id: "mouse-logitech-g502", name: "Mouse Gamer Logitech G502 X 25600 DPI", category: "Mouse", price: 349.9, sold: 1750, tag: "FPS", image: "", slug: "" },
-  { id: "teclado-redragon", name: "Teclado Mecânico Redragon Kumara RGB Switch Red", category: "Teclado", price: 259.9, sold: 1430, tag: "Mecânico", image: "", slug: "" },
-  { id: "headset-hyperx", name: "Headset Gamer HyperX Cloud Stinger 2 7.1 Surround", category: "Headset", price: 249.9, sold: 1100, tag: "Som limpo", image: "", slug: "" },
-  { id: "monitor-aoc-144", name: 'Monitor AOC 24G2SE 23.8" 144Hz IPS Full HD', category: "Monitor", price: 1099.9, sold: 720, tag: "144Hz", image: "", slug: "" },
-  { id: "fonte-corsair-650", name: "Fonte Corsair CV650 650W 80 Plus Bronze", category: "Fonte", price: 449.9, sold: 590, tag: "Estável", image: "", slug: "" },
-  { id: "gabinete-aerocool", name: "Gabinete Aerocool Cylon Mid Tower RGB Lateral Vidro", category: "Gabinete", price: 299.9, sold: 480, tag: "Airflow", image: "", slug: "" },
-  { id: "mb-gigabyte-b650", name: "Placa-mãe Gigabyte B650M DS3H DDR5 AM5", category: "Placa-mãe", price: 849.9, sold: 360, tag: "AM5", image: "", slug: "" },
-];
-
 function normalize(str: string) {
   return (str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
@@ -128,9 +112,10 @@ export default function Home() {
   const [sort, setSort] = useState("relevancia");
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [query, setQuery] = useState("");
-  const [allProducts, setAllProducts] = useState(PRODUCTS);
+  const [allProducts, setAllProducts] = useState<{ id: string; name: string; category: string; price: number; sold: number; tag: string; image: string; slug: string }[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  /* Load DB products and merge with hardcoded */
+  /* Load DB products */
   useEffect(() => {
     fetch("/api/products")
       .then(r => r.ok ? r.json() : null)
@@ -146,10 +131,11 @@ export default function Home() {
             image: (Array.isArray(p.images) && p.images.length > 0) ? p.images[0] : "",
             slug: (p.slug as string) || "",
           }));
-          setAllProducts([...dbItems, ...PRODUCTS]);
+          setAllProducts(dbItems);
         }
+        setLoading(false);
       })
-      .catch(() => {});
+      .catch(() => { setLoading(false); });
   }, []);
 
   /* Read query param on mount */
@@ -264,10 +250,14 @@ export default function Home() {
             </div>
 
             <div className="products" aria-live="polite">
-              {filtered.length === 0 ? (
+              {loading ? (
                 <div className="card" style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px 20px" }}>
-                  <h3 style={{ marginBottom: 8 }}>Nenhum produto encontrado</h3>
-                  <p className="muted">Tente remover filtros ou buscar por outro termo.</p>
+                  <p className="muted">Carregando produtos...</p>
+                </div>
+              ) : filtered.length === 0 ? (
+                <div className="card" style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px 20px" }}>
+                  <h3 style={{ marginBottom: 8 }}>Nenhum produto cadastrado ainda</h3>
+                  <p className="muted">O administrador pode adicionar produtos pelo painel administrativo.</p>
                 </div>
               ) : (
                 filtered.map(p => <ProductCard key={p.id} product={p} />)
