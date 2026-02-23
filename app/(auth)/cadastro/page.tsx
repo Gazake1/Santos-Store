@@ -55,7 +55,7 @@ function maskCEP(v: string) {
 }
 
 export default function CadastroPage() {
-  const { user, login } = useAuth();
+  const { user, updateUser, updateToken } = useAuth();
   const { showToast } = useToast();
   const router = useRouter();
 
@@ -211,7 +211,8 @@ export default function CadastroPage() {
       const data = await res.json();
       if (!res.ok) { setError(data.error || "Erro ao criar conta"); setLoading(false); return; }
 
-      login(data.user, data.token);
+      updateUser(data.user);
+      updateToken(data.token);
       showToast("Conta criada com sucesso!", "success");
 
       setTimeout(() => {

@@ -32,28 +32,19 @@ export default function LoginPage() {
     if (!email || !password) { setError("Preencha todos os campos"); return; }
 
     setLoading(true);
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-
-      if (!res.ok) { setError(data.error || "Erro ao fazer login"); setLoading(false); return; }
-
-      login(data.user, data.token);
-      showToast(`Bem-vindo, ${data.user.name}!`, "success");
-
-      setTimeout(() => {
-        const redir = localStorage.getItem("sg_redirect") || "/";
-        localStorage.removeItem("sg_redirect");
-        router.push(redir);
-      }, 600);
-    } catch {
-      setError("Erro de conexão. Verifique se o servidor está rodando.");
+    const result = await login(email, password);
+    if (!result.success) {
+      setError(result.error || "Erro ao fazer login");
       setLoading(false);
+      return;
     }
+
+    showToast("Bem-vindo de volta!", "success");
+    setTimeout(() => {
+      const redir = localStorage.getItem("sg_redirect") || "/";
+      localStorage.removeItem("sg_redirect");
+      router.push(redir);
+    }, 600);
   };
 
   if (user) return null;
