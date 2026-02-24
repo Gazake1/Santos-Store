@@ -494,6 +494,19 @@
 .muted { color: var(--muted); }
 
 /* ── Responsive ── */
+@media (max-width: 900px) {
+  .admin__table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: .82rem;
+  }
+  .admin__header-inner {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
 @media (max-width: 640px) {
   .admin__form-row, .admin__form-row--3 {
     grid-template-columns: 1fr;
@@ -503,5 +516,16 @@
   }
   .admin__modal {
     padding: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
   }
+  .admin__section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .admin__header-actions {
+    gap: 4px;
+  }
+  .admin__header-actions .btn { font-size: .8rem; padding: 6px 10px; }
 }

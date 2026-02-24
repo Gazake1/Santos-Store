@@ -80,11 +80,11 @@ function Carousel() {
         <div className="carousel__track" style={{ transform: `translateX(-${index * 100}%)` }}>
           {banners.map(b => (
             <article key={b.id} className="slide" style={{ "--bg1": b.bg1, "--bg2": b.bg2 } as React.CSSProperties}>
-              <div className="mediaPlaceholder">
+              <div className="slide__banner">
                 {b.link_url ? (
-                  <a href={b.link_url}><img src={b.image_url} alt={b.alt_text || ""} /></a>
+                  <a href={b.link_url} className="slide__banner-link"><img src={b.image_url} alt={b.alt_text || ""} className="slide__banner-img" /></a>
                 ) : (
-                  <img src={b.image_url} alt={b.alt_text || ""} />
+                  <img src={b.image_url} alt={b.alt_text || ""} className="slide__banner-img" />
                 )}
               </div>
             </article>

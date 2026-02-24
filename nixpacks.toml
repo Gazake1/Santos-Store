@@ -8,7 +8,7 @@ nixPkgs = ["python3", "gcc", "gnumake", "nodejs_20"]
 cmds = ["npm ci", "npm rebuild better-sqlite3 --build-from-source"]
 
 [phases.build]
-cmds = ["rm -rf .next/cache", "NODE_ENV=production npm run build", "mkdir -p uploads", "mkdir -p data"]
+cmds = ["find .next/cache -mindepth 1 -delete 2>/dev/null || true", "NODE_ENV=production npm run build", "mkdir -p uploads", "mkdir -p data"]
 
 [start]
 cmd = "npm run start"
