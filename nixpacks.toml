@@ -1,6 +1,9 @@
 # Nixpacks config for Santos Store (Next.js)
 # better-sqlite3 needs python + gcc to compile its native addon
 
+# Disable Docker cache mounts to avoid stale webpack data
+cacheDirectories = []
+
 [phases.setup]
 nixPkgs = ["python3", "gcc", "gnumake", "nodejs_20"]
 
@@ -8,7 +11,7 @@ nixPkgs = ["python3", "gcc", "gnumake", "nodejs_20"]
 cmds = ["npm ci", "npm rebuild better-sqlite3 --build-from-source"]
 
 [phases.build]
-cmds = ["find .next/cache -mindepth 1 -delete 2>/dev/null || true", "NODE_ENV=production npm run build", "mkdir -p uploads", "mkdir -p data"]
+cmds = ["echo '=== DEBUG: listing lib/ and styles/ ===' && ls -la lib/ && ls -la styles/", "NODE_ENV=production npm run build", "mkdir -p uploads", "mkdir -p data"]
 
 [start]
 cmd = "npm run start"
