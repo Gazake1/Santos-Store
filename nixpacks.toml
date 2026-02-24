@@ -8,7 +8,8 @@ nixPkgs = ["python3", "gcc", "gnumake", "nodejs_20"]
 cmds = ["npm ci", "npm rebuild better-sqlite3 --build-from-source"]
 
 [phases.build]
-cmds = ["NODE_ENV=production npm run build", "mkdir -p uploads", "mkdir -p data"]
+# Clear stale Docker cache mounts BEFORE build (same RUN = same mount)
+cmds = ["rm -rf .next/cache/* node_modules/.cache/* 2>/dev/null; NODE_ENV=production npm run build", "mkdir -p uploads", "mkdir -p data"]
 
 [start]
 cmd = "npm run start"
