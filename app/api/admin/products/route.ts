@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
   const body = await req.json();
   const {
-    title, description, short_description, category, price, original_price,
+    title, description, short_description, category, product_type, price, original_price,
     installment_count, accepts_card, accepts_pix, accepts_boleto,
     stock, tag, specs, active, featured,
   } = body;
@@ -47,12 +47,12 @@ export async function POST(req: Request) {
   if (existingSlug) slug += `-${Date.now().toString(36)}`;
 
   const info = db.prepare(
-    `INSERT INTO products (title,slug,description,short_description,category,price,original_price,
+    `INSERT INTO products (title,slug,description,short_description,category,product_type,price,original_price,
       installment_count,accepts_card,accepts_pix,accepts_boleto,stock,sold,tag,images,specs,active,featured,created_by)
      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,0,?,'[]',?,?,?,?)`
   ).run(
     title.trim(), slug, (description || "").trim(), (short_description || "").trim(),
-    (category || "").trim(), Number(price) || 0, Number(original_price) || 0,
+    (category || "").trim(), (product_type || "").trim(), Number(price) || 0, Number(original_price) || 0,
     Number(installment_count) || 0, accepts_card ? 1 : 0, accepts_pix !== false ? 1 : 0,
     accepts_boleto ? 1 : 0, Number(stock) || 0, (tag || "").trim(),
     JSON.stringify(specs || {}), active !== false ? 1 : 0, featured ? 1 : 0, result.user.id

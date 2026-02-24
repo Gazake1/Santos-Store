@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { useTheme } from "@/lib/theme-context";
 import { useToast } from "@/lib/toast-context";
+import { PRODUCT_TYPES, buildEmptySpecs, type SpecGroupData } from "@/lib/product-types";
 
 interface Product {
   id: number;
@@ -15,6 +16,7 @@ interface Product {
   short_description: string;
   description: string;
   category: string;
+  product_type: string;
   tag: string;
   price: number;
   original_price: number;
@@ -27,6 +29,7 @@ interface Product {
   active: boolean;
   featured: boolean;
   images: string[];
+  specs: SpecGroupData[] | Record<string, string>;
 }
 
 interface Banner {
@@ -51,7 +54,7 @@ const money = (v: number) => Number(v || 0).toLocaleString("pt-BR", { style: "cu
 const truncate = (s: string, len = 40) => (!s ? "—" : s.length > len ? s.slice(0, len) + "…" : s);
 
 const EMPTY_PRODUCT = {
-  title: "", short_description: "", description: "", category: "", tag: "",
+  title: "", short_description: "", description: "", category: "", product_type: "", tag: "",
   price: 0, original_price: 0, installment_count: 0, stock: 0, sold: 0,
   accepts_card: true, accepts_pix: true, accepts_boleto: false, active: true, featured: false,
 };
@@ -69,6 +72,7 @@ export default function AdminPage() {
   const [form, setForm] = useState(EMPTY_PRODUCT);
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [specGroups, setSpecGroups] = useState<SpecGroupData[]>([]);
   const [saving, setSaving] = useState(false);
 
   /* Banner state */
@@ -135,6 +139,7 @@ export default function AdminPage() {
     setForm({ ...EMPTY_PRODUCT });
     setPendingFiles([]);
     setExistingImages([]);
+    setSpecGroups([]);
     setModalOpen(true);
   };
 
@@ -142,12 +147,25 @@ export default function AdminPage() {
     setEditingId(p.id);
     setForm({
       title: p.title || "", short_description: p.short_description || "", description: p.description || "",
-      category: p.category || "", tag: p.tag || "",
+      category: p.category || "", product_type: p.product_type || "", tag: p.tag || "",
       price: p.price || 0, original_price: p.original_price || 0, installment_count: p.installment_count || 0,
       stock: p.stock ?? 0, sold: p.sold ?? 0,
       accepts_card: !!p.accepts_card, accepts_pix: !!p.accepts_pix, accepts_boleto: !!p.accepts_boleto,
       active: !!p.active, featured: !!p.featured,
     });
+    // Load existing specs: support both new array format and legacy object format
+    if (Array.isArray(p.specs)) {
+      setSpecGroups(p.specs);
+    } else if (p.specs && typeof p.specs === "object" && Object.keys(p.specs).length > 0) {
+      // Convert legacy { key: value } to new format
+      setSpecGroups([{ group: "Características", specs: Object.entries(p.specs).map(([label, value]) => ({ label, value: String(value) })) }]);
+    } else {
+      if (p.product_type && PRODUCT_TYPES[p.product_type]) {
+        setSpecGroups(buildEmptySpecs(p.product_type));
+      } else {
+        setSpecGroups([]);
+      }
+    }
     setExistingImages(Array.isArray(p.images) ? [...p.images] : []);
     setPendingFiles([]);
     setModalOpen(true);
@@ -222,11 +240,19 @@ export default function AdminPage() {
     if (!form.title.trim()) { showToast("Título é obrigatório", "error"); return; }
     if (form.price <= 0) { showToast("Preço deve ser maior que zero", "error"); return; }
 
+    // Filter out empty spec values before saving
+    const cleanedSpecs = specGroups.map(g => ({
+      ...g,
+      specs: g.specs.filter(s => s.value.trim() !== ""),
+    })).filter(g => g.specs.length > 0);
+
+    const formData = { ...form, specs: cleanedSpecs };
+
     setSaving(true);
     try {
       let product: Product;
       if (editingId) {
-        const res = await fetch(`/api/admin/products/${editingId}`, { method: "PUT", headers: headers(), body: JSON.stringify(form) });
+        const res = await fetch(`/api/admin/products/${editingId}`, { method: "PUT", headers: headers(), body: JSON.stringify(formData) });
         if (!res.ok) throw new Error((await res.json()).error || "Erro");
         product = (await res.json()).product ?? (await (await fetch(`/api/admin/products`, { headers: headers() })).json()).products?.find((p: Product) => p.id === editingId);
 
@@ -237,7 +263,7 @@ export default function AdminPage() {
           await fetch(`/api/admin/products/${editingId}/images`, { method: "DELETE", headers: headers(), body: JSON.stringify({ imagePath: img }) }).catch(() => {});
         }
       } else {
-        const res = await fetch("/api/admin/products", { method: "POST", headers: headers(), body: JSON.stringify(form) });
+        const res = await fetch("/api/admin/products", { method: "POST", headers: headers(), body: JSON.stringify(formData) });
         if (!res.ok) throw new Error((await res.json()).error || "Erro");
         product = (await res.json()).product;
       }
@@ -428,6 +454,27 @@ export default function AdminPage() {
           <div className="admin__modal">
             <h2>{editingId ? "Editar Produto" : "Novo Produto"}</h2>
             <form className="admin__form" onSubmit={saveProduct} noValidate>
+              {/* Product Type Selector */}
+              <div className="admin__field admin__field--full">
+                <label>Tipo do produto *</label>
+                <div className="admin__type-grid">
+                  {Object.entries(PRODUCT_TYPES).map(([key, cfg]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      className={`admin__type-btn${form.product_type === key ? " is-active" : ""}`}
+                      onClick={() => {
+                        setForm(f => ({ ...f, product_type: key }));
+                        setSpecGroups(buildEmptySpecs(key));
+                      }}
+                    >
+                      <span className="admin__type-icon">{cfg.icon}</span>
+                      <span className="admin__type-label">{cfg.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="admin__field admin__field--full">
                 <label>Título</label>
                 <input type="text" placeholder="Nome do produto" required value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
@@ -470,6 +517,63 @@ export default function AdminPage() {
                   </label>
                 ))}
               </div>
+
+              {/* ── Dynamic Spec Fields (based on product type) ── */}
+              {specGroups.length > 0 && (
+                <div className="admin__field admin__field--full admin__specs-section">
+                  <div className="admin__specs-header">
+                    <label>Características do produto</label>
+                    <span className="admin__specs-type-badge">{form.product_type && PRODUCT_TYPES[form.product_type] ? PRODUCT_TYPES[form.product_type].label : ""}</span>
+                  </div>
+                  {specGroups.map((group, gIdx) => {
+                    const typeConfig = form.product_type ? PRODUCT_TYPES[form.product_type] : null;
+                    const groupConfig = typeConfig?.groups.find(g => g.title === group.group);
+                    return (
+                      <div key={gIdx} className="admin__specs-group">
+                        <h4 className="admin__specs-group-title">{group.group}</h4>
+                        <div className="admin__specs-fields">
+                          {group.specs.map((spec, sIdx) => {
+                            const fieldConfig = groupConfig?.fields.find(f => f.label === spec.label);
+                            return (
+                              <div key={sIdx} className="admin__specs-row">
+                                <span className="admin__specs-label">{spec.label}</span>
+                                {fieldConfig?.type === "select" && fieldConfig.options ? (
+                                  <select
+                                    value={spec.value}
+                                    onChange={e => {
+                                      const val = e.target.value;
+                                      setSpecGroups(prev => prev.map((g, gi) =>
+                                        gi === gIdx ? { ...g, specs: g.specs.map((s, si) => si === sIdx ? { ...s, value: val } : s) } : g
+                                      ));
+                                    }}
+                                  >
+                                    <option value="">Selecione...</option>
+                                    {fieldConfig.options.map(opt => (
+                                      <option key={opt} value={opt}>{opt}</option>
+                                    ))}
+                                  </select>
+                                ) : (
+                                  <input
+                                    type="text"
+                                    placeholder={fieldConfig?.placeholder || ""}
+                                    value={spec.value}
+                                    onChange={e => {
+                                      const val = e.target.value;
+                                      setSpecGroups(prev => prev.map((g, gi) =>
+                                        gi === gIdx ? { ...g, specs: g.specs.map((s, si) => si === sIdx ? { ...s, value: val } : s) } : g
+                                      ));
+                                    }}
+                                  />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Images */}
               <div className="admin__field admin__field--full">

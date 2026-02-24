@@ -10,6 +10,9 @@ import { useToast } from "@/lib/toast-context";
 
 const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
+interface SpecItem { label: string; value: string }
+interface SpecGroupData { group: string; specs: SpecItem[] }
+
 interface ProductData {
   id: number;
   title: string;
@@ -17,6 +20,7 @@ interface ProductData {
   description: string;
   short_description: string;
   category: string;
+  product_type: string;
   price: number;
   original_price: number;
   installment_count: number;
@@ -27,7 +31,7 @@ interface ProductData {
   sold: number;
   tag: string;
   images: string[];
-  specs: Record<string, string>;
+  specs: SpecGroupData[] | Record<string, string>;
   active: number;
   featured: number;
 }
@@ -113,6 +117,16 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   };
 
   const specsEntries = product.specs && typeof product.specs === "object" ? Object.entries(product.specs) : [];
+
+  // Determine if specs are in new grouped format (array) or legacy flat format (object)
+  const isGroupedSpecs = Array.isArray(product.specs);
+  const groupedSpecs: SpecGroupData[] = isGroupedSpecs
+    ? (product.specs as SpecGroupData[]).filter(g => g.specs && g.specs.length > 0)
+    : [];
+  const flatSpecs = !isGroupedSpecs && product.specs && typeof product.specs === "object"
+    ? Object.entries(product.specs).filter(([, v]) => v)
+    : [];
+  const hasSpecs = groupedSpecs.length > 0 || flatSpecs.length > 0;
 
   return (
     <>
@@ -258,17 +272,33 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       </section>
 
       {/* Specs */}
-      {specsEntries.length > 0 && (
+      {hasSpecs && (
         <section className="ml-section" id="caracteristicas">
           <div className="container">
             <div className="ml-card">
               <div className="ml-card__header"><h2 className="ml-card__title">Características do produto</h2></div>
               <div className="ml-specs">
-                <div className="ml-specs__group">
-                  <table className="ml-specs__table"><tbody>
-                    {specsEntries.map(([k, v], i) => <tr key={i}><td>{k}</td><td>{v}</td></tr>)}
-                  </tbody></table>
-                </div>
+                {groupedSpecs.length > 0 ? (
+                  /* New grouped format */
+                  groupedSpecs.map((group, gIdx) => (
+                    <div key={gIdx} className="ml-specs__group">
+                      <h3 className="ml-specs__subtitle">{group.group}</h3>
+                      <table className="ml-specs__table"><tbody>
+                        {group.specs.map((spec, sIdx) => (
+                          <tr key={sIdx}><td>{spec.label}</td><td>{spec.value}</td></tr>
+                        ))}
+                      </tbody></table>
+                      {gIdx < groupedSpecs.length - 1 && <div className="ml-specs__divider" />}
+                    </div>
+                  ))
+                ) : (
+                  /* Legacy flat format */
+                  <div className="ml-specs__group">
+                    <table className="ml-specs__table"><tbody>
+                      {flatSpecs.map(([k, v], i) => <tr key={i}><td>{k}</td><td>{v}</td></tr>)}
+                    </tbody></table>
+                  </div>
+                )}
               </div>
             </div>
           </div>

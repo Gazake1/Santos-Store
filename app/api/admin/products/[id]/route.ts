@@ -35,6 +35,7 @@ export async function PUT(
     description: v => (v as string).trim(),
     short_description: v => (v as string).trim(),
     category: v => (v as string).trim(),
+    product_type: v => (v as string).trim(),
     price: v => Number(v),
     original_price: v => Number(v),
     installment_count: v => Number(v),

@@ -78,6 +78,7 @@ function initTables(db: Database.Database) {
       description       TEXT DEFAULT '',
       short_description TEXT DEFAULT '',
       category          TEXT DEFAULT '',
+      product_type      TEXT DEFAULT '',
       price             REAL NOT NULL DEFAULT 0,
       original_price    REAL DEFAULT 0,
       installment_count INTEGER DEFAULT 0,
@@ -149,6 +150,12 @@ function initTables(db: Database.Database) {
       db.exec(`ALTER TABLE users ADD COLUMN ${col.name} ${col.type}`);
     }
   });
+
+  // Migration: add product_type column to products if missing
+  const prodCols = (db.prepare("PRAGMA table_info(products)").all() as { name: string }[]).map(c => c.name);
+  if (!prodCols.includes("product_type")) {
+    db.exec(`ALTER TABLE products ADD COLUMN product_type TEXT DEFAULT ''`);
+  }
 }
 
 function seedAdmin(db: Database.Database) {
