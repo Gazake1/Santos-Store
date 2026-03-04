@@ -253,8 +253,9 @@ export default function AdminPage() {
       let product: Product;
       if (editingId) {
         const res = await fetch(`/api/admin/products/${editingId}`, { method: "PUT", headers: headers(), body: JSON.stringify(formData) });
-        if (!res.ok) throw new Error((await res.json()).error || "Erro");
-        product = (await res.json()).product ?? (await (await fetch(`/api/admin/products`, { headers: headers() })).json()).products?.find((p: Product) => p.id === editingId);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Erro");
+        product = data.product ?? (await (await fetch(`/api/admin/products`, { headers: headers() })).json()).products?.find((p: Product) => p.id === editingId);
 
         // Remove deleted existing images
         const serverImages = product?.images || [];
@@ -264,8 +265,9 @@ export default function AdminPage() {
         }
       } else {
         const res = await fetch("/api/admin/products", { method: "POST", headers: headers(), body: JSON.stringify(formData) });
-        if (!res.ok) throw new Error((await res.json()).error || "Erro");
-        product = (await res.json()).product;
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Erro");
+        product = data.product;
       }
 
       // Upload pending files

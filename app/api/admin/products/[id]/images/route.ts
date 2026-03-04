@@ -37,7 +37,7 @@ export async function POST(
     return NextResponse.json({ error: "Máximo de 10 imagens por upload" }, { status: 400 });
   }
 
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
+  const uploadsDir = path.join(process.cwd(), "uploads");
   if (!existsSync(uploadsDir)) await mkdir(uploadsDir, { recursive: true });
 
   const existing = JSON.parse(product.images || "[]") as string[];
@@ -53,7 +53,7 @@ export async function POST(
     const name = `product-${Date.now()}-${crypto.randomBytes(4).toString("hex")}${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(path.join(uploadsDir, name), buffer);
-    newPaths.push(`/uploads/${name}`);
+    newPaths.push(`/api/uploads/${name}`);
   }
 
   const all = [...existing, ...newPaths];
@@ -85,7 +85,7 @@ export async function DELETE(
     .run(JSON.stringify(filtered), product.id);
 
   try {
-    const fullPath = path.join(process.cwd(), "public", imagePath);
+    const fullPath = path.join(process.cwd(), imagePath.replace(/^\/api\/uploads\//, "uploads/").replace(/^\/uploads\//, "uploads/"));
     if (existsSync(fullPath)) await unlink(fullPath);
   } catch { /* ignore */ }
 

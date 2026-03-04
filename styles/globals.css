@@ -98,6 +98,7 @@ html {
 
 body {
   min-height: 100%;
+  padding-top: 64px; /* space for fixed header */
   font-family: var(--font);
   font-size: 15px;
   line-height: var(--leading-normal);
@@ -192,8 +193,10 @@ ul, ol { list-style: none; }
    HEADER
    =========================== */
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
   background: rgba(247, 247, 251, .88);
   backdrop-filter: blur(14px);

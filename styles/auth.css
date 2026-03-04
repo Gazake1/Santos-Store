@@ -4,6 +4,7 @@
 
 .auth {
   min-height: 100vh;
+  margin-top: -64px; /* compensate for body padding-top from fixed header */
   display: flex;
   align-items: center;
   justify-content: center;

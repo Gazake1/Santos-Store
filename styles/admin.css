@@ -5,6 +5,8 @@
 /* ── Layout ── */
 .admin {
   min-height: 100vh;
+  margin-top: -64px; /* compensate for body padding-top from fixed header */
+  padding-top: 0;
   background: var(--bg-alt, #f5f5f5);
 }
 

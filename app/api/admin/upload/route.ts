@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Imagem deve ter no máximo 5MB" }, { status: 400 });
   }
 
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
+  const uploadsDir = path.join(process.cwd(), "uploads");
   if (!existsSync(uploadsDir)) await mkdir(uploadsDir, { recursive: true });
 
   const ext = path.extname(file.name).toLowerCase() || ".webp";
@@ -30,5 +30,5 @@ export async function POST(req: Request) {
   const buffer = Buffer.from(await file.arrayBuffer());
   await writeFile(path.join(uploadsDir, name), buffer);
 
-  return NextResponse.json({ url: `/uploads/${name}` });
+  return NextResponse.json({ url: `/api/uploads/${name}` });
 }
