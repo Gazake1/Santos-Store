@@ -6,9 +6,9 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Santos Store — Periféricos, Hardware & Serviços",
+  title: "Santos Store — Periféricos & Hardware",
   description: "Santos Store — loja gamer especializada em periféricos, hardware, upgrades e serviços técnicos.",
-  icons: { icon: "./assets/img/LOGO SG VERMELHA PNG.png" },
+  icons: { icon: "/assets/LOGO SG VERMELHA PNG.png" },
 };
 
 export default function RootLayout({

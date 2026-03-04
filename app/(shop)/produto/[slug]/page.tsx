@@ -288,7 +288,6 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                           <tr key={sIdx}><td>{spec.label}</td><td>{spec.value}</td></tr>
                         ))}
                       </tbody></table>
-                      {gIdx < groupedSpecs.length - 1 && <div className="ml-specs__divider" />}
                     </div>
                   ))
                 ) : (
